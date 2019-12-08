@@ -32,10 +32,12 @@
     },
     "extra": {
         "name": "Socializer",
-        "handle": "socializer",
-        "hasCpSettings": false,
-        "hasCpSection": false,
+        "handle": "enupal-socializer",
+        "hasSettings": true,
         "changelogUrl": "https://raw.githubusercontent.com/enupal/socializer/master/CHANGELOG.md",
-        "class": "enupal\\socializer\\Socializer"
+        "class": "enupal\\socializer\\Socializer",
+        "components": {
+            "app": "enupal\\socializer\\services\\App"
+        }
     }
 }
