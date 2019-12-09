@@ -19,7 +19,7 @@ class ProvidersQuery extends ElementQuery
     public $id;
     public $dateCreated;
     public $name;
-    public $provider;
+    public $type;
     public $clientId;
     public $clientSecret;
     public $fieldMapping;
@@ -35,9 +35,9 @@ class ProvidersQuery extends ElementQuery
     /**
      * @inheritdoc
      */
-    public function provider($value)
+    public function type($value)
     {
-        $this->provider = $value;
+        $this->type = $value;
 
         return $this;
     }
@@ -45,9 +45,9 @@ class ProvidersQuery extends ElementQuery
     /**
      * @inheritdoc
      */
-    public function getProvider()
+    public function getType()
     {
-        return $this->provider;
+        return $this->type;
     }
 
     /**
@@ -99,7 +99,7 @@ class ProvidersQuery extends ElementQuery
         $this->query->select([
             'enupalsocializer_providers.id',
             'enupalsocializer_providers.name',
-            'enupalsocializer_providers.provider',
+            'enupalsocializer_providers.type',
             'enupalsocializer_providers.clientId',
             'enupalsocializer_providers.clientSecret',
             'enupalsocializer_providers.fieldMapping'
@@ -111,9 +111,9 @@ class ProvidersQuery extends ElementQuery
             );
         }
 
-        if ($this->provider) {
+        if ($this->type) {
             $this->subQuery->andWhere(Db::parseParam(
-                'enupalsocializer_providers.provider', $this->provider)
+                'enupalsocializer_providers.provider', $this->type)
             );
         }
 

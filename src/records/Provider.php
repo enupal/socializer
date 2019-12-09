@@ -16,7 +16,7 @@ use craft\records\Element;
  * Class Provider record.
  * @property int    $id
  * @property string $name
- * @property string $provider
+ * @property string $type
  * @property string $clientId
  * @property string $clientSecret
  * @property string $fieldMapping

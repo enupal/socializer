@@ -39,9 +39,9 @@ class Provider extends Element
     public $name;
 
     /**
-     * @var string Provider.
+     * @var string Type.
      */
-    public $provider;
+    public $type;
 
     /**
      * @var string Client ID.
@@ -221,7 +221,7 @@ class Provider extends Element
      */
     protected static function defineSearchableAttributes(): array
     {
-        return ['name', 'provider'];
+        return ['name', 'type'];
     }
 
     /**
@@ -231,8 +231,7 @@ class Provider extends Element
     {
         $attributes = [
             'elements.dateCreated' => Craft::t('enupal-socializer','Date Created'),
-            'name' => Craft::t('enupal-socializer','Name'),
-            'provider' => Craft::t('enupal-socializer','Provider')
+            'name' => Craft::t('enupal-socializer','Name')
         ];
 
         return $attributes;
@@ -245,7 +244,6 @@ class Provider extends Element
     {
         $attributes = [];
         $attributes['name'] = ['label' => Craft::t('enupal-socializer','Name')];
-        $attributes['provider'] = ['label' => Craft::t('enupal-socializer','Provider')];
         $attributes['dateCreated'] = ['label' => Craft::t('enupal-socializer','Date Created')];
 
         return $attributes;
@@ -256,7 +254,7 @@ class Provider extends Element
      */
     protected static function defineDefaultTableAttributes(string $source): array
     {
-        $attributes = ['name', 'provider', 'dateCreated'];
+        $attributes = ['name', 'dateCreated'];
 
         return $attributes;
     }
@@ -308,7 +306,7 @@ class Provider extends Element
         }
 
         $record->name = $this->name;
-        $record->provider = $this->provider;
+        $record->type = $this->type;
 
         $record->clientId = $this->clientId;
         $record->clientSecret = $this->clientSecret;
@@ -329,10 +327,10 @@ class Provider extends Element
     public function rules()
     {
         $rules = [];
-        $rules[] = [['name', 'provider'], 'required'];
-        $rules[] = [['name', 'provider'], 'string', 'max' => 255];
-        $rules[] = [['name', 'provider'], UniqueValidator::class, 'targetClass' => ProviderRecord::class];
-        $rules[] = [['name', 'provider'], 'required'];
+        $rules[] = [['name', 'type'], 'required'];
+        $rules[] = [['name', 'type'], 'string', 'max' => 255];
+        $rules[] = [['name', 'type'], UniqueValidator::class, 'targetClass' => ProviderRecord::class];
+        $rules[] = [['name', 'type'], 'required'];
 
         return $rules;
     }
