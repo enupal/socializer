@@ -23,8 +23,6 @@ use yii\base\Model;
 /**
  * Provider represents a provider element.
  *
- * @property $enupalMultiplePlans
- * @property $singlePlanInfo
  */
 class Provider extends Element
 {

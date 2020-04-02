@@ -10,27 +10,22 @@ namespace enupal\socializer;
 
 use Craft;
 use craft\base\Plugin;
+use enupal\socializer\models\Settings;
 
 class Socializer extends Plugin
 {
-    // Static Properties
-    // =========================================================================
-
     /**
      * @var Socializer
      */
     public static $plugin;
-
-    // Public Properties
-    // =========================================================================
 
     /**
      * @var string
      */
     public $schemaVersion = '1.0.0';
 
-    // Public Methods
-    // =========================================================================
+    public $hasCpSection = true;
+    public $hasCpSettings = true;
 
     /**
      * @inheritdoc
@@ -42,4 +37,11 @@ class Socializer extends Plugin
 
     }
 
+    /**
+     * @inheritdoc
+     */
+    protected function createSettingsModel()
+    {
+        return new Settings();
+    }
 }
