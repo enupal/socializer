@@ -18,7 +18,7 @@ class App extends Component
     public $settings;
 
     /**
-     * @var PaymentForms
+     * @var Providers
      */
     public $providers;
 

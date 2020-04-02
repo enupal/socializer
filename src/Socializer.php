@@ -6,18 +6,25 @@
  * @link      https://enupal.com/
  * @copyright Copyright (c) 2019 Enupal LLC
  */
+
 namespace enupal\socializer;
 
 use Craft;
 use craft\base\Plugin;
+use craft\web\twig\variables\CraftVariable;
 use enupal\socializer\models\Settings;
+use enupal\socializer\services\App;
+use enupal\socializer\variables\SocializerVariable;
+use yii\base\Event;
 
 class Socializer extends Plugin
 {
     /**
-     * @var Socializer
+     * Enable use of Socializer::$app-> in place of Craft::$app->
+     *
+     * @var App
      */
-    public static $plugin;
+    public static $app;
 
     /**
      * @var string
@@ -33,8 +40,17 @@ class Socializer extends Plugin
     public function init()
     {
         parent::init();
-        self::$plugin = $this;
+        self::$app = $this->get('app');
 
+        Event::on(
+            CraftVariable::class,
+            CraftVariable::EVENT_INIT,
+            function(Event $event) {
+                /** @var CraftVariable $variable */
+                $variable = $event->sender;
+                $variable->set('socializer', SocializerVariable::class);
+            }
+        );
     }
 
     /**
