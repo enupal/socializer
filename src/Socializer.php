@@ -11,11 +11,13 @@ namespace enupal\socializer;
 
 use Craft;
 use craft\base\Plugin;
+
 use craft\web\twig\variables\CraftVariable;
 use enupal\socializer\models\Settings;
 use enupal\socializer\services\App;
 use enupal\socializer\variables\SocializerVariable;
 use yii\base\Event;
+
 
 class Socializer extends Plugin
 {
