@@ -12,6 +12,7 @@ use Craft;
 use craft\base\Element;
 use craft\behaviors\FieldLayoutBehavior;
 use craft\elements\actions\Delete;
+use craft\elements\actions\Restore;
 use craft\elements\db\ElementQueryInterface;
 use craft\helpers\UrlHelper;
 
@@ -213,7 +214,14 @@ class Provider extends Element
 
         // Delete
         $actions[] = Craft::$app->getElements()->createAction([
-            'type' => Delete::class
+            'type' => Delete::class,
+            'confirmationMessage' => Craft::t('enupal-socializer', 'Are you sure you want to delete the selected providers?'),
+            'successMessage' => 'Providers deleted'
+        ]);
+
+        $actions[] = Craft::$app->getElements()->createAction([
+            'type' => Restore::class,
+            'successMessage' => 'Providers restored'
         ]);
 
         return $actions;
@@ -330,7 +338,7 @@ class Provider extends Element
      */
     public function rules()
     {
-        $rules = [];
+        $rules = parent::rules();;
         $rules[] = [['name', 'type'], 'required'];
         $rules[] = [['name', 'type'], 'string', 'max' => 255];
         $rules[] = [['name', 'type'], UniqueValidator::class, 'targetClass' => ProviderRecord::class];

@@ -87,7 +87,8 @@ class ProvidersController extends BaseController
                 $url = UrlHelper::cpUrl('enupal-socializer/providers/edit/'.$provider->id);
                 return $this->redirect($url);
             } else {
-                throw new \Exception(Craft::t('enupal-socializer','Error creating the Provider'));
+                $errors = $provider->getErrors();
+                throw new \Exception(Craft::t('enupal-socializer','Error creating the Provider'.json_encode($errors)));
             }
         } else {
             if ($providerId !== null) {

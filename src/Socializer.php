@@ -19,7 +19,7 @@ use enupal\socializer\models\Settings;
 use enupal\socializer\services\App;
 use enupal\socializer\variables\SocializerVariable;
 use yii\base\Event;
-
+use craft\services\Gc;
 
 class Socializer extends Plugin
 {
@@ -60,6 +60,10 @@ class Socializer extends Plugin
             $event->rules = array_merge($event->rules, $this->getCpUrlRules());
         }
         );
+
+        Event::on(Gc::class, Gc::EVENT_RUN, function() {
+            Craft::$app->gc->hardDelete('{{%enupalsocializer_providers}}');
+        });
     }
 
     /**

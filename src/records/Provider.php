@@ -11,6 +11,7 @@ namespace enupal\socializer\records;
 use craft\db\ActiveRecord;
 use yii\db\ActiveQueryInterface;
 use craft\records\Element;
+use craft\db\SoftDeleteTrait;
 
 /**
  * Class Provider record.
@@ -25,6 +26,8 @@ use craft\records\Element;
 
 class Provider extends ActiveRecord
 {
+    use SoftDeleteTrait;
+
     /**
      * @inheritdoc
      *
