@@ -15,14 +15,15 @@
     {% set options = craft.socializer.getProvidersAsOptions() %}
 <div class="buttons">
     <form id="createProviderForm" method="POST">
-        {{ csrfInput() }}
-        <input type="hidden" name="action" value="enupal-socializer/providers/edit-provider">
         {{ forms.selectField({
             id: 'providerType',
             name: 'providerType',
+            class: 'providerType',
             options: options,
             value: ""
         }) }}
+        {{ csrfInput() }}
+        <input type="hidden" name="action" value="enupal-socializer/providers/edit-provider">
     </form>
 </div>
     <div class="buttons">
@@ -38,3 +39,8 @@
         });
     });
 {% endjs %}
+{% css %}
+    #providerType-field{
+        padding-top: 23px;
+    }
+{% endcss %}
