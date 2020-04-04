@@ -19,6 +19,7 @@ class ProvidersQuery extends ElementQuery
     public $id;
     public $dateCreated;
     public $name;
+    public $handle;
     public $type;
     public $clientId;
     public $clientSecret;
@@ -63,6 +64,16 @@ class ProvidersQuery extends ElementQuery
     /**
      * @inheritdoc
      */
+    public function handle($value)
+    {
+        $this->handle = $value;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getName()
     {
         return $this->name;
@@ -99,6 +110,7 @@ class ProvidersQuery extends ElementQuery
         $this->query->select([
             'enupalsocializer_providers.id',
             'enupalsocializer_providers.name',
+            'enupalsocializer_providers.handle',
             'enupalsocializer_providers.type',
             'enupalsocializer_providers.clientId',
             'enupalsocializer_providers.clientSecret',
@@ -111,9 +123,15 @@ class ProvidersQuery extends ElementQuery
             );
         }
 
+        if ($this->handle) {
+            $this->subQuery->andWhere(Db::parseParam(
+                'enupalsocializer_providers.handle', $this->handle)
+            );
+        }
+
         if ($this->type) {
             $this->subQuery->andWhere(Db::parseParam(
-                'enupalsocializer_providers.provider', $this->type)
+                'enupalsocializer_providers.type', $this->type)
             );
         }
 

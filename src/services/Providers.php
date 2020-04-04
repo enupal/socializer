@@ -11,6 +11,7 @@ namespace enupal\socializer\services;
 use Craft;
 use craft\db\Query;
 use enupal\socializer\elements\Provider;
+use enupal\socializer\records\Provider as ProviderRecord;
 use Hybridauth\Provider\Facebook;
 use Hybridauth\Provider\LinkedIn;
 use Hybridauth\Provider\Twitter;
@@ -118,25 +119,54 @@ class Providers extends Component
      */
     public function createNewProvider(string $name, string $handle, string $type): Provider
     {
-        $paymentForm = new Provider();
+        $provider = new Provider();
 
-        $paymentForm->name = $name;
-        $paymentForm->handle = $handle;
-        $paymentForm->hasUnlimitedStock = 1;
-        $paymentForm->enableBillingAddress = 0;
-        $paymentForm->enableShippingAddress = 0;
-        $paymentForm->customerQuantity = 0;
-        $paymentForm->buttonClass = 'enupal-stripe-button';
-        $paymentForm->amountType = AmountType::ONE_TIME_SET_AMOUNT;
-        $paymentForm->currency = $settings->defaultCurrency ? $settings->defaultCurrency : 'USD';
-        $paymentForm->enabled = 1;
-        $paymentForm->language = 'en';
+        $provider->name = $name;
+        $provider->handle = $handle;
+        $provider->type = $type;
+        $provider->enabled = 0;
 
-        // Set default variant
-        $paymentForm = $this->addDefaultVariant($paymentForm);
+        $this->saveProvider($provider);
 
-        $this->savePaymentForm($paymentForm);
+        return $provider;
+    }
 
-        return $paymentForm;
+    /**
+     * @param $provider Provider
+     *
+     * @return bool
+     * @throws Exception
+     * @throws \Throwable
+     */
+    public function saveProvider(Provider $provider)
+    {
+        if ($provider->id) {
+            $providerRecord = ProviderRecord::findOne($provider->id);
+
+            if (!$providerRecord) {
+                throw new Exception(Craft::t("enupal-socializer",'No Provider exists with the ID “{id}”', ['id' => $provider->id]));
+            }
+        }
+
+        if (!$provider->validate()) {
+            return false;
+        }
+
+        $transaction = Craft::$app->db->beginTransaction();
+
+        try {
+            // Set the field context
+            Craft::$app->content->fieldContext = $provider->getFieldContext();
+
+            if (Craft::$app->elements->saveElement($provider)) {
+                $transaction->commit();
+            }
+        } catch (\Exception $e) {
+            $transaction->rollback();
+
+            throw $e;
+        }
+
+        return true;
     }
 }

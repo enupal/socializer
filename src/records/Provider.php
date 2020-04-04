@@ -17,6 +17,7 @@ use craft\records\Element;
  * @property int    $id
  * @property string $name
  * @property string $type
+ * @property string $handle
  * @property string $clientId
  * @property string $clientSecret
  * @property string $fieldMapping

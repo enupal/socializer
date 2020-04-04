@@ -17,8 +17,6 @@
 {% set title = 'Edit Provider'|t('enupal-socializer') %}
 {% set fullPageForm = true %}
 {% set saveShortcutRedirect = continueEditingUrl %}
-{% set tab = provider.getFieldLayout().getTabs()[0] %}
-{% set fields = tab.getFields() %}
 
 {% set tabs = {
     general:  {

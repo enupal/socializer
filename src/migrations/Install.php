@@ -46,9 +46,10 @@ class Install extends Migration
         $this->createTable('{{%enupalsocializer_providers}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
+            'handle' => $this->string()->notNull(),
             'type' => $this->string()->notNull(),
-            'clientId' => $this->string()->notNull(),
-            'clientSecret' => $this->string()->notNull(),
+            'clientId' => $this->string(),
+            'clientSecret' => $this->string(),
             'fieldMapping' => $this->text(),
             //
             'dateCreated' => $this->dateTime()->notNull(),

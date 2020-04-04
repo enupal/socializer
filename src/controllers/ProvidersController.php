@@ -43,7 +43,7 @@ class ProvidersController extends BaseController
 
         // Save it
         if (!Socializer::$app->paymentForms->savePaymentForm($paymentForm)) {
-            Craft::$app->getSession()->setError(Craft::t('enupal-socializer','Couldn’t save payment form.'));
+            Craft::$app->getSession()->setError(Craft::t('enupal-socializer','Couldn’t save provider'));
 
             Craft::$app->getUrlManager()->setRouteParams([
                     'paymentForm' => $paymentForm
@@ -53,7 +53,7 @@ class ProvidersController extends BaseController
             return null;
         }
 
-        Craft::$app->getSession()->setNotice(Craft::t('enupal-socializer','Payment form saved.'));
+        Craft::$app->getSession()->setNotice(Craft::t('enupal-socializer','Provider saved.'));
 
         return $this->redirectToPostedUrl($paymentForm);
     }
@@ -61,7 +61,7 @@ class ProvidersController extends BaseController
     /**
      * Edit a Provider
      *
-     * @param int|null           $providerId The button's ID, if editing an existing button.
+     * @param int|null $providerId The button's ID, if editing an existing button.
      * @param ProviderElement|null $provider   The provider send back by setRouteParams if any errors on saveProvider
      *
      * @return \yii\web\Response
@@ -71,7 +71,6 @@ class ProvidersController extends BaseController
      */
     public function actionEditProvider(int $providerId = null, ProviderElement $provider = null)
     {
-        Craft::dd($_POST);
         // Immediately create a new Provider
         if ($providerId === null) {
             $request = Craft::$app->getRequest();
@@ -85,7 +84,7 @@ class ProvidersController extends BaseController
             $provider = Socializer::$app->providers->createNewProvider($providerName, $providerHandle, $providerType);
 
             if ($provider->id) {
-                $url = UrlHelper::cpUrl('enupal-socializer/provider/edit/'.$provider->id);
+                $url = UrlHelper::cpUrl('enupal-socializer/providers/edit/'.$provider->id);
                 return $this->redirect($url);
             } else {
                 throw new \Exception(Craft::t('enupal-socializer','Error creating the Provider'));
@@ -107,17 +106,17 @@ class ProvidersController extends BaseController
         $variables['provider'] = $provider;
 
         // Set the "Continue Editing" URL
-        $variables['continueEditingUrl'] = 'enupal-socializer/provider/edit/{id}';
+        $variables['continueEditingUrl'] = 'enupal-socializer/providers/edit/{id}';
 
         $variables['settings'] = Socializer::$app->settings->getSettings();
 
         $variables['providerInfo'] = new \ReflectionClass($provider->type);
 
-        return $this->renderTemplate('enupal-socializer/provider/_edit', $variables);
+        return $this->renderTemplate('enupal-socializer/providers/_edit', $variables);
     }
 
     /**
-     * Delete a Stripe Payment Form.
+     * Delete a Provider.
      *
      * @return \yii\web\Response
      * @throws \Throwable
@@ -130,33 +129,14 @@ class ProvidersController extends BaseController
 
         $request = Craft::$app->getRequest();
 
-        $providerId = $request->getRequiredBodyParam('formId');
-        $paymentForm = Socializer::$app->paymentForms->getPaymentFormById($providerId);
+        $providerId = $request->getRequiredBodyParam('providerId');
+        $provider = Socializer::$app->providers->getProviderById($providerId);
 
         // @TODO - handle errors
-        Socializer::$app->paymentForms->deletePaymentForm($paymentForm);
+        Socializer::$app->providers->deleteProvider($provider);
 
-        Craft::$app->getSession()->setNotice(Craft::t('enupal-socializer','Payment form deleted.'));
+        Craft::$app->getSession()->setNotice(Craft::t('enupal-socializer','Provider deleted.'));
 
-        return $this->redirectToPostedUrl($paymentForm);
-    }
-
-    /**
-     * Retrieve all stripe plans as options for dropdown select field
-     *
-     * @return \yii\web\Response
-     */
-    public function actionRefreshPlans()
-    {
-        try {
-            $this->requirePostRequest();
-            $this->requireAcceptsJson();
-
-            $plans = Socializer::$app->plans->getStripePlans();
-        } catch (\Throwable $e) {
-            return $this->asErrorJson($e->getMessage());
-        }
-
-        return $this->asJson(['success'=> true, 'plans' => $plans]);
+        return $this->redirectToPostedUrl($provider);
     }
 }

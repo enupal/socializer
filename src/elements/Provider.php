@@ -37,6 +37,11 @@ class Provider extends Element
     public $name;
 
     /**
+     * @var string Handle.
+     */
+    public $handle;
+
+    /**
      * @var string Type.
      */
     public $type;
@@ -305,6 +310,7 @@ class Provider extends Element
 
         $record->name = $this->name;
         $record->type = $this->type;
+        $record->handle = $this->handle;
 
         $record->clientId = $this->clientId;
         $record->clientSecret = $this->clientSecret;
