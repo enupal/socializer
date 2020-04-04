@@ -26,7 +26,7 @@ class ProvidersController extends BaseController
      * @throws \Throwable
      * @throws \yii\web\BadRequestHttpException
      */
-    public function actionSaveForm()
+    public function actionSaveProvider()
     {
         $this->requirePostRequest();
 
@@ -71,6 +71,7 @@ class ProvidersController extends BaseController
      */
     public function actionEditProvider(int $providerId = null, ProviderElement $provider = null)
     {
+        Craft::dd($_POST);
         // Immediately create a new Provider
         if ($providerId === null) {
             $request = Craft::$app->getRequest();
@@ -123,7 +124,7 @@ class ProvidersController extends BaseController
      * @throws \craft\errors\MissingComponentException
      * @throws \yii\web\BadRequestHttpException
      */
-    public function actionDeleteForm()
+    public function actionDeleteProvider()
     {
         $this->requirePostRequest();
 

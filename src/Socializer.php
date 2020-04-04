@@ -12,7 +12,9 @@ namespace enupal\socializer;
 use Craft;
 use craft\base\Plugin;
 
+use craft\events\RegisterUrlRulesEvent;
 use craft\web\twig\variables\CraftVariable;
+use craft\web\UrlManager;
 use enupal\socializer\models\Settings;
 use enupal\socializer\services\App;
 use enupal\socializer\variables\SocializerVariable;
@@ -53,6 +55,45 @@ class Socializer extends Plugin
                 $variable->set('socializer', SocializerVariable::class);
             }
         );
+
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function(RegisterUrlRulesEvent $event) {
+            $event->rules = array_merge($event->rules, $this->getCpUrlRules());
+        }
+        );
+    }
+
+    /**
+     * @return array
+     */
+    private function getCpUrlRules()
+    {
+        return [
+            'enupal-socializer/providers/new' =>
+                'enupal-socializer/providers/edit-provider',
+
+            'enupal-socializer/providers/edit/<providerId:\d+>' =>
+                'enupal-socializer/providers/edit-provider'
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getCpNavItem()
+    {
+        $parent = parent::getCpNavItem();
+        return array_merge($parent, [
+            'subnav' => [
+                'providers' => [
+                    "label" => Craft::t('enupal-socializer',"Providers"),
+                    "url" => 'enupal-socializer/providers'
+                ],
+                'settings' => [
+                    "label" => Craft::t('enupal-socializer',"Settings"),
+                    "url" => 'enupal-socializer/settings'
+                ]
+            ]
+        ]);
     }
 
     /**
