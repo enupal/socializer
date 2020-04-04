@@ -12,10 +12,11 @@
 {% set title = "Providers"|t %}
 {% set elementType = 'enupal\\socializer\\elements\\Provider' %}
 {% block actionButton %}
+    {% set options = craft.socializer.getProvidersAsOptions() %}
     {{ forms.selectField({
-        id: 'type',
-        name: 'type',
-        options: [{ label: "facebook", value: "facebook"}, {label: "twitter", value: "twitter"}],
+        id: 'providerType',
+        name: 'providerType',
+        options: options,
         value: ""
     }) }}
     <div class="buttons">

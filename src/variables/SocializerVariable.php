@@ -40,8 +40,12 @@ class SocializerVariable extends Behavior
         return $query;
     }
 
+    /**
+     * @return array
+     * @throws \ReflectionException
+     */
     public function getProvidersAsOptions()
     {
-        Socializer::$app->providers->getProviderTypesAsOptions();
+        return Socializer::$app->providers->getProviderTypesAsOptions();
     }
 }
