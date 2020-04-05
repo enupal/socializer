@@ -110,8 +110,7 @@ class ProvidersController extends BaseController
         $variables['continueEditingUrl'] = 'enupal-socializer/providers/edit/{id}';
 
         $variables['settings'] = Socializer::$app->settings->getSettings();
-
-        $variables['providerInfo'] = new \ReflectionClass($provider->type);
+        $variables['apiDocumentation'] = $this->getApiDocumentation($provider->type);
 
         return $this->renderTemplate('enupal-socializer/providers/_edit', $variables);
     }
@@ -139,5 +138,20 @@ class ProvidersController extends BaseController
         Craft::$app->getSession()->setNotice(Craft::t('enupal-socializer','Provider deleted.'));
 
         return $this->redirectToPostedUrl($provider);
+    }
+
+    /**
+     * @param $providerType
+     * @return mixed
+     * @throws \ReflectionException
+     */
+    private function getApiDocumentation($providerType)
+    {
+        $reflection = new \ReflectionClass($providerType);
+        $property = $reflection->getProperty('apiDocumentation');
+        $property->setAccessible(true);
+        $obj = new $providerType(['callback' => 'https://example.com/path/to/script.php',"keys"=>["key" => "ads", "secret"=>"test"]]);
+
+        return $property->getValue($obj);
     }
 }
