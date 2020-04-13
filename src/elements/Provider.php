@@ -19,6 +19,7 @@ use craft\helpers\UrlHelper;
 use enupal\socializer\records\Provider as ProviderRecord;
 use craft\validators\UniqueValidator;
 use enupal\socializer\elements\db\ProvidersQuery;
+use enupal\socializer\validators\EnabledValidator;
 use yii\base\Model;
 
 /**
@@ -338,11 +339,12 @@ class Provider extends Element
      */
     public function rules()
     {
-        $rules = parent::rules();;
+        $rules = [];
         $rules[] = [['name', 'type'], 'required'];
         $rules[] = [['name', 'type'], 'string', 'max' => 255];
         $rules[] = [['name', 'type'], UniqueValidator::class, 'targetClass' => ProviderRecord::class];
         $rules[] = [['name', 'type'], 'required'];
+        $rules[] = [['clientId'], EnabledValidator::class];
 
         return $rules;
     }

@@ -169,4 +169,21 @@ class Providers extends Component
 
         return true;
     }
+
+    /**
+     * @param Provider $provider
+     *
+     * @return Provider
+     */
+    public function populateProviderFromPost(Provider $provider)
+    {
+        $request = Craft::$app->getRequest();
+
+        $postFields = $request->getBodyParam('fields');
+
+        $provider->setAttributes(/** @scrutinizer ignore-type */
+            $postFields, false);
+
+        return $provider;
+    }
 }

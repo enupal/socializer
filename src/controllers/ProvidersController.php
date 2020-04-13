@@ -1,10 +1,11 @@
 <?php
 /**
- * Stripe Payments plugin for Craft CMS 3.x
+ * Socializer plugin for Craft CMS 3.x
  *
  * @link      https://enupal.com/
- * @copyright Copyright (c) 2018 Enupal LLC
+ * @copyright Copyright (c) 2019 Enupal LLC
  */
+
 
 namespace enupal\socializer\controllers;
 
@@ -31,22 +32,22 @@ class ProvidersController extends BaseController
         $this->requirePostRequest();
 
         $request = Craft::$app->getRequest();
-        $paymentForm = new ProviderElement;
+        $provider = new ProviderElement;
 
-        $providerId = $request->getBodyParam('formId');
+        $providerId = $request->getBodyParam('providerId');
 
         if ($providerId) {
-            $paymentForm = Socializer::$app->paymentForms->getPaymentFormById($providerId);
+            $provider = Socializer::$app->providers->getProviderById($providerId);
         }
 
-        $paymentForm = Socializer::$app->paymentForms->populatePaymentFormFromPost($paymentForm);
+        $provider = Socializer::$app->providers->populateProviderFromPost($provider);
 
         // Save it
-        if (!Socializer::$app->paymentForms->savePaymentForm($paymentForm)) {
+        if (!Socializer::$app->providers->saveProvider($provider)) {
             Craft::$app->getSession()->setError(Craft::t('enupal-socializer','Couldn’t save provider'));
 
             Craft::$app->getUrlManager()->setRouteParams([
-                    'paymentForm' => $paymentForm
+                    'provider' => $provider
                 ]
             );
 
@@ -55,7 +56,7 @@ class ProvidersController extends BaseController
 
         Craft::$app->getSession()->setNotice(Craft::t('enupal-socializer','Provider saved.'));
 
-        return $this->redirectToPostedUrl($paymentForm);
+        return $this->redirectToPostedUrl($provider);
     }
 
     /**
