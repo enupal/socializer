@@ -44,6 +44,30 @@ class Settings extends Component
     }
 
     /**
+     * @return bool|string
+     */
+    public function getPrimarySiteUrl()
+    {
+        $primarySite = (new Query())
+            ->select(['baseUrl'])
+            ->from(['{{%sites}}'])
+            ->where(['primary' => 1])
+            ->one();
+
+        $primarySiteUrl = Craft::getAlias($primarySite['baseUrl']);
+
+        return Craft::parseEnv(Craft::getAlias(rtrim(trim($primarySiteUrl), "/")));
+    }
+
+    /**
+     * @return string
+     */
+    public function getCallbackUrl()
+    {
+        return $this->getPrimarySiteUrl()."/socializer/login/callback";
+    }
+
+    /**
      * @return SettingsModel
      */
     public function getSettings()
@@ -63,54 +87,6 @@ class Settings extends Component
     }
 
     /**
-     * @return string
-     */
-    public function getPublishableKey()
-    {
-        $settings = $this->getSettings();
-        $publishableKey = $settings->testMode ? $settings->testPublishableKey : $settings->livePublishableKey;
-
-        return $publishableKey;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPrivateKey()
-    {
-        $settings = $this->getSettings();
-
-        $secretKey = $settings->testMode ? $settings->testSecretKey : $settings->liveSecretKey;
-
-        return $secretKey;
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function initializeStripe()
-    {
-        $privateKey = $this->getPrivateKey();
-
-        if ($privateKey) {
-            Stripe::setAppInfo('Craft CMS - '.StripePlugin::getInstance()->name, StripePlugin::getInstance()->version, StripePlugin::getInstance()->documentationUrl, self::STRIPE_PARTNER_ID);
-            Stripe::setApiKey($privateKey);
-            Stripe::setApiVersion('2019-09-09');
-        }
-        else{
-            throw new \Exception(Craft::t('enupal-stripe','Unable to get the stripe keys.'));
-        }
-    }
-
-    /**
-     * @return array|null
-     */
-    public function getConfigSettings()
-    {
-        return Craft::$app->config->getGeneral()->stripePayments ?? null;
-    }
-
-    /**
      * @return string|null
      */
     public function getPluginUid()
@@ -118,26 +94,9 @@ class Settings extends Component
         $plugin = (new Query())
             ->select(['uid'])
             ->from('{{%plugins}}')
-            ->where(["handle" => 'enupal-stripe'])
+            ->where(["handle" => 'enupal-socializer'])
             ->one();
 
         return $plugin['uid'] ?? null;
-    }
-
-    /**
-     * @return string
-     * @throws Exception
-     */
-    public function getFieldContext()
-    {
-        $pluginUid = $this->getPluginUid();
-
-        if (is_null($pluginUid)){
-            throw new Exception('Unable to get the plugin Uid');
-        }
-
-        $context = 'enupalStripe:'.$pluginUid;
-
-        return $context;
     }
 }

@@ -19,7 +19,9 @@ use craft\helpers\UrlHelper;
 use enupal\socializer\records\Provider as ProviderRecord;
 use craft\validators\UniqueValidator;
 use enupal\socializer\elements\db\ProvidersQuery;
+use enupal\socializer\Socializer;
 use enupal\socializer\validators\EnabledValidator;
+use Hybridauth\Adapter\AdapterInterface;
 use yii\base\Model;
 
 /**
@@ -332,6 +334,27 @@ class Provider extends Element
         $record->save(false);
 
         parent::afterSave($isNew);
+    }
+
+    /**
+     * @return AdapterInterface
+     */
+    public function getAdapter()
+    {
+        return new $this->type($this->getProviderConfig());
+    }
+
+    private function getProviderConfig()
+    {
+        // @todo add event to give a chance to update default config
+        return [
+            'callback' => Socializer::$app->settings->getCallbackUrl(),
+            'keys' => [
+                'id' => Craft::parseEnv($this->clientId),
+                'secret' => Craft::parseEnv($this->clientSecret)
+            ],
+            'includeEmail' => true
+        ];
     }
 
     /**

@@ -36,7 +36,7 @@ class Socializer extends Plugin
     public $schemaVersion = '1.0.0';
 
     public $hasCpSection = true;
-    public $hasCpSettings = true;
+    public $hasCpSettings = false;
 
     /**
      * @inheritdoc
@@ -58,6 +58,11 @@ class Socializer extends Plugin
 
         Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_CP_URL_RULES, function(RegisterUrlRulesEvent $event) {
             $event->rules = array_merge($event->rules, $this->getCpUrlRules());
+        }
+        );
+
+        Event::on(UrlManager::class, UrlManager::EVENT_REGISTER_SITE_URL_RULES, function(RegisterUrlRulesEvent $event) {
+            $event->rules = array_merge($event->rules, $this->getSiteUrlRules());
         }
         );
 
@@ -98,6 +103,20 @@ class Socializer extends Plugin
                 ]
             ]
         ]);
+    }
+
+    /**
+     * @return array
+     */
+    private function getSiteUrlRules()
+    {
+        return [
+            'socializer/login' =>
+                'enupal-socializer/login/login',
+
+            'socializer/login/callback' =>
+                'enupal-socializer/login/callback'
+        ];
     }
 
     /**
