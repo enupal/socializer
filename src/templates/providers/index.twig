@@ -13,22 +13,24 @@
 {% set elementType = 'enupal\\socializer\\elements\\Provider' %}
 {% block actionButton %}
     {% set options = craft.socializer.getProvidersAsOptions() %}
-<div class="buttons">
-    <form id="createProviderForm" method="POST">
-        {{ forms.selectField({
-            id: 'providerType',
-            name: 'providerType',
-            class: 'providerType',
-            options: options,
-            value: ""
-        }) }}
-        {{ csrfInput() }}
-        <input type="hidden" name="action" value="enupal-socializer/providers/edit-provider">
-    </form>
-</div>
-    <div class="buttons">
-        <a class="btn submit add icon" href="{{ url('enupal-socializer/providers/new') }}">{{ "New Provider"|t('enupal-socializer') }}</a>
-    </div>
+    {% if options|length %}
+        <div class="buttons">
+            <form id="createProviderForm" method="POST">
+                {{ forms.selectField({
+                    id: 'providerType',
+                    name: 'providerType',
+                    class: 'providerType',
+                    options: options,
+                    value: ""
+                }) }}
+                {{ csrfInput() }}
+                <input type="hidden" name="action" value="enupal-socializer/providers/edit-provider">
+            </form>
+        </div>
+        <div class="buttons">
+            <a class="btn submit add icon" href="{{ url('enupal-socializer/providers/new') }}">{{ "New Provider"|t('enupal-socializer') }}</a>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% js %}
