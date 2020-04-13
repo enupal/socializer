@@ -36,12 +36,18 @@ class Providers extends Component
     }
 
     /**
+     * @param bool $excludeCreated
      * @return array
      * @throws \ReflectionException
      */
-    public function getProviderTypesAsOptions()
+    public function getProviderTypesAsOptions($excludeCreated = true)
     {
         $providers = $this->getAllProviderTypes();
+
+        if ($excludeCreated){
+            $providers = $this->getExcludeCreatedProviders();
+        }
+
         $asOptions = [];
         foreach ($providers as $provider) {
             $option = [
@@ -52,6 +58,26 @@ class Providers extends Component
         }
 
         return $asOptions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getExcludeCreatedProviders()
+    {
+        $providerTypes = $this->getAllProviderTypes();
+        $providers = (new Query())
+            ->select(['type'])
+            ->from(["{{%enupalsocializer_providers}}"])
+            ->all();
+
+        foreach ($providers as $provider) {
+            if (($key = array_search($provider["type"], $providerTypes)) !== false) {
+                unset($providerTypes[$key]);
+            }
+        }
+
+        return $providerTypes;
     }
 
     /**
