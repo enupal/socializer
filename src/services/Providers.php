@@ -10,12 +10,15 @@ namespace enupal\socializer\services;
 
 use Craft;
 use craft\db\Query;
+use craft\elements\User;
 use enupal\socializer\elements\Provider;
 use enupal\socializer\records\Provider as ProviderRecord;
+use Hybridauth\Adapter\AdapterInterface;
 use Hybridauth\Provider\Facebook;
 use Hybridauth\Provider\LinkedIn;
 use Hybridauth\Provider\Twitter;
 use Hybridauth\Provider\Google;
+use Hybridauth\User\Profile;
 use yii\base\Component;
 use enupal\socializer\Socializer;
 use yii\db\Exception;
@@ -155,6 +158,56 @@ class Providers extends Component
         $this->saveProvider($provider);
 
         return $provider;
+    }
+
+    public function loginOrRegisterUser(AdapterInterface $adapter, Provider $provider)
+    {
+        $userProfile = $adapter->getUserProfile();
+        $craftUser = Craft::$app->getUser()->getIdentity();
+
+        if (!$craftUser){
+            $craftUser = $this->registerUser($userProfile, $provider);
+        }
+
+        // @todo add register token and craft login
+
+    }
+
+    /**
+     * @param Profile $userProfile
+     * @param Provider $provider
+     * @return User
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\WrongEditionException
+     * @throws \yii\base\Exception
+     */
+    private function registerUser(Profile $userProfile, Provider $provider): User
+    {
+        if (is_null($userProfile->email)){
+            throw new \Exception("Email address is not provided, please check the settings of your application");
+        }
+
+        $user = Craft::$app->users->getUserByUsernameOrEmail($userProfile->email);
+
+        if ($user) {
+            return $user;
+        }
+
+        Craft::$app->requireEdition(Craft::Pro);
+        // @todo add field mapping
+        $user = new User();
+        $user->email = $userProfile->email;
+        $user->username = $userProfile->email;
+        $user->firstName = $userProfile->firstName;
+        $user->lastName = $userProfile->lastName;
+
+        if (!Craft::$app->elements->saveElement($user)){
+            Craft::error("Unable to create user: ".json_encode($user->getErrors()));
+            throw new \Exception("Something went wrong while creating the user");
+        }
+
+        return $user;
     }
 
     /**
