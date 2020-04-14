@@ -25,8 +25,8 @@ class LoginController extends FrontEndController
         $providerHandle = Craft::$app->getRequest()->getParam('provider');
         $provider = Socializer::$app->providers->getProviderByHandle($providerHandle);
 
-        if (!$provider) {
-            throw new \Exception(Craft::t('enupal-socializer','Provider not found'));
+        if (is_null($provider)) {
+            throw new \Exception(Craft::t('enupal-socializer','Provider not found or disabled'));
         }
 
         $redirectUrl = Craft::$app->getRequest()->referrer;
@@ -54,8 +54,16 @@ class LoginController extends FrontEndController
 
         $provider = Socializer::$app->providers->getProviderByHandle($providerHandle);
 
+        if (is_null($provider)){
+            throw new \Exception(Craft::t('enupal-socializer','Provider not found or disabled'));
+        }
+
         $adapter =  $provider->getAdapter();
-        $adapter->authenticate();
+
+        if (!$adapter->authenticate()){
+            throw new \Exception(Craft::t('enupal-socializer','Unable to Authenticate'));
+        }
+
         $userProfile = $adapter->getUserProfile();
         Craft::dd($userProfile);
 

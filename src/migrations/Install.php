@@ -21,6 +21,7 @@ class Install extends Migration
     public function safeUp()
     {
         $this->createTables();
+        $this->addIndexes();
         $this->addForeignKeys();
 
         return true;
@@ -32,6 +33,7 @@ class Install extends Migration
     public function safeDown()
     {
         $this->dropTableIfExists('{{%enupalsocializer_providers}}');
+        $this->dropTableIfExists('{{%enupalsocializer_tokens}}');
 
         return true;
     }
@@ -57,6 +59,24 @@ class Install extends Migration
             'dateDeleted' => $this->dateTime()->null(),
             'uid' => $this->uid(),
         ]);
+
+        $this->createTable('{{%enupalsocializer_tokens}}', [
+            'id' => $this->primaryKey(),
+            'userId' => $this->integer(),
+            'accessToken' => $this->text(),
+            'providerId' => $this->integer(),
+            //
+            'dateCreated' => $this->dateTime()->notNull(),
+            'dateUpdated' => $this->dateTime()->notNull(),
+            'dateDeleted' => $this->dateTime()->null(),
+            'uid' => $this->uid(),
+        ]);
+    }
+
+    protected function addIndexes()
+    {
+        $this->createIndex(null, '{{%enupalsocializer_tokens}}', 'userId', false);
+        $this->createIndex(null, '{{%enupalsocializer_tokens}}', 'providerId', false);
     }
 
     /**
@@ -72,6 +92,22 @@ class Install extends Migration
             ),
             '{{%enupalsocializer_providers}}', 'id',
             '{{%elements}}', 'id', 'CASCADE', null
+        );
+
+        $this->addForeignKey(
+            $this->db->getForeignKeyName(
+                '{{%enupalsocializer_tokens}}', 'userId'
+            ),
+            '{{%enupalsocializer_tokens}}', 'userId',
+            '{{%users}}', 'id', 'CASCADE', null
+        );
+
+        $this->addForeignKey(
+            $this->db->getForeignKeyName(
+                '{{%enupalsocializer_tokens}}', 'providerId'
+            ),
+            '{{%enupalsocializer_tokens}}', 'providerId',
+            '{{%enupalsocializer_providers}}', 'id', 'CASCADE', null
         );
     }
 }
