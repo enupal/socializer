@@ -12,6 +12,7 @@ use Craft;
 use craft\db\Query;
 use craft\elements\User;
 use enupal\socializer\elements\Provider;
+use enupal\socializer\elements\Token;
 use enupal\socializer\records\Provider as ProviderRecord;
 use Hybridauth\Adapter\AdapterInterface;
 use Hybridauth\Provider\Facebook;
@@ -22,6 +23,7 @@ use Hybridauth\User\Profile;
 use yii\base\Component;
 use enupal\socializer\Socializer;
 use yii\db\Exception;
+use function GuzzleHttp\Psr7\_parse_message;
 
 class Providers extends Component
 {
@@ -160,17 +162,35 @@ class Providers extends Component
         return $provider;
     }
 
-    public function loginOrRegisterUser(AdapterInterface $adapter, Provider $provider)
+    /**
+     * @param Provider $provider
+     * @return bool
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\MissingComponentException
+     * @throws \craft\errors\WrongEditionException
+     * @throws \yii\base\Exception
+     */
+    public function loginOrRegisterUser(Provider $provider)
     {
-        $userProfile = $adapter->getUserProfile();
-        $craftUser = Craft::$app->getUser()->getIdentity();
+        $adapter = $provider->getAdapter();
+        $adapter->authenticate();
 
-        if (!$craftUser){
-            $craftUser = $this->registerUser($userProfile, $provider);
+        $userProfile = $adapter->getUserProfile();
+        $user = Craft::$app->getUser()->getIdentity();
+
+        if (!$user){
+            $user = $this->registerUser($userProfile, $provider);
         }
 
-        // @todo add register token and craft login
+        Socializer::$app->tokens->registerToken($user, $provider);
 
+        if (!Craft::$app->getUser()->login($user)) {
+            Craft::error("Something went wrong while login craft user", __METHOD__);
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -195,7 +215,7 @@ class Providers extends Component
         }
 
         Craft::$app->requireEdition(Craft::Pro);
-        // @todo add field mapping
+        // @todo add field mapping and use provider passed as param
         $user = new User();
         $user->email = $userProfile->email;
         $user->username = $userProfile->email;

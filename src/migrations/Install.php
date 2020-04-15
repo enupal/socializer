@@ -63,8 +63,8 @@ class Install extends Migration
         $this->createTable('{{%enupalsocializer_tokens}}', [
             'id' => $this->primaryKey(),
             'userId' => $this->integer(),
-            'accessToken' => $this->text(),
             'providerId' => $this->integer(),
+            'accessToken' => $this->text(),
             //
             'dateCreated' => $this->dateTime()->notNull(),
             'dateUpdated' => $this->dateTime()->notNull(),

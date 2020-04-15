@@ -98,10 +98,7 @@ class TokensQuery extends ElementQuery
             'enupalsocializer_tokens.id',
             'enupalsocializer_tokens.userId',
             'enupalsocializer_tokens.accessToken',
-            'enupalsocializer_tokens.providerId',
-            'enupalsocializer_tokens.clientId',
-            'enupalsocializer_tokens.clientSecret',
-            'enupalsocializer_tokens.fieldMapping'
+            'enupalsocializer_tokens.providerId'
         ]);
 
         if ($this->userId) {

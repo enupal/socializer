@@ -22,9 +22,15 @@ class App extends Component
      */
     public $providers;
 
+    /**
+     * @var Tokens
+     */
+    public $tokens;
+
     public function init()
     {
         $this->settings = new Settings();
         $this->providers = new Providers();
+        $this->tokens = new Tokens();
     }
 }

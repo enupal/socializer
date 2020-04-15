@@ -12,10 +12,12 @@ namespace enupal\socializer\controllers;
 use Craft;
 use enupal\socializer\Socializer;
 use enupal\stripe\controllers\FrontEndController;
-use Hybridauth\HttpClient\Util;
 
 class LoginController extends FrontEndController
 {
+    const SESSION_REDIRECT_URL = "socializer.redirectUrl";
+    const SESSION_PROVIDER_HANDLE = "socializer.providerHandle";
+
     /**
      * @return \yii\web\Response
      * @throws \craft\errors\MissingComponentException
@@ -30,8 +32,8 @@ class LoginController extends FrontEndController
         }
 
         $redirectUrl = Craft::$app->getRequest()->referrer;
-        Craft::$app->getSession()->set('socializer.redirectUrl', Craft::$app->getRequest()->referrer);
-        Craft::$app->getSession()->set('socializer.providerHandle', $providerHandle);
+        Craft::$app->getSession()->set(self::SESSION_REDIRECT_URL, Craft::$app->getRequest()->referrer);
+        Craft::$app->getSession()->set(self::SESSION_PROVIDER_HANDLE, $providerHandle);
         $adapter = $provider->getAdapter();
 
         try {
@@ -49,8 +51,8 @@ class LoginController extends FrontEndController
 
     public function actionCallback()
     {
-        $redirectUrl = Craft::$app->getSession()->get('socializer.redirectUrl');
-        $providerHandle = Craft::$app->getSession()->get('socializer.providerHandle');
+        $redirectUrl = Craft::$app->getSession()->get(self::SESSION_REDIRECT_URL);
+        $providerHandle = Craft::$app->getSession()->get(self::SESSION_PROVIDER_HANDLE);
 
         $provider = Socializer::$app->providers->getProviderByHandle($providerHandle);
 
@@ -58,15 +60,21 @@ class LoginController extends FrontEndController
             throw new \Exception(Craft::t('enupal-socializer','Provider not found or disabled'));
         }
 
-        $adapter = $provider->getAdapter();
-
-        if (!$adapter->authenticate()){
-            throw new \Exception(Craft::t('enupal-socializer','Unable to Authenticate'));
+        if (!Socializer::$app->providers->loginOrRegisterUser($provider)){
+            Craft::$app->getSession()->setError(Craft::t('enupal-socializer', "Unable to authenticate user"));
         }
 
-
-        Socializer::$app->providers->loginOrRegisterUser($adapter, $provider);
+        $this->restoreSession();
 
         return $this->redirect($redirectUrl);
+    }
+
+    /**
+     * @throws \craft\errors\MissingComponentException
+     */
+    private function restoreSession()
+    {
+        Craft::$app->getSession()->remove(self::SESSION_REDIRECT_URL);
+        Craft::$app->getSession()->remove(self::SESSION_PROVIDER_HANDLE);
     }
 }
