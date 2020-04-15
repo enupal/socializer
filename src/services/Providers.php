@@ -12,9 +12,8 @@ use Craft;
 use craft\db\Query;
 use craft\elements\User;
 use enupal\socializer\elements\Provider;
-use enupal\socializer\elements\Token;
 use enupal\socializer\records\Provider as ProviderRecord;
-use Hybridauth\Adapter\AdapterInterface;
+use Hybridauth\Provider\Discord;
 use Hybridauth\Provider\Facebook;
 use Hybridauth\Provider\LinkedIn;
 use Hybridauth\Provider\Twitter;
@@ -23,7 +22,6 @@ use Hybridauth\User\Profile;
 use yii\base\Component;
 use enupal\socializer\Socializer;
 use yii\db\Exception;
-use function GuzzleHttp\Psr7\_parse_message;
 
 class Providers extends Component
 {
@@ -36,7 +34,8 @@ class Providers extends Component
             Facebook::class,
             Twitter::class,
             Google::class,
-            LinkedIn::class
+            LinkedIn::class,
+            Discord::class
         ];
     }
 

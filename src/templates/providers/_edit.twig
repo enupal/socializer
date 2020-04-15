@@ -61,8 +61,10 @@
             <hr>
             {{ forms.field({
                 label: "OAuth credentials"|t('enupal-socializer'),
-                instructions: "create a new application following the next <a target='_blank' href='"~ apiDocumentation ~"'>instructions</a>"|t('enupal-socializer')
+                instructions: "Create a new application following the next <a target='_blank' href='"~ apiDocumentation ~"'>instructions</a>, and add the following redirect URI to your APP:"|t('enupal-socializer')
             }, null) }}
+            <hr>
+            <input type="text" class="text ltr fullwidth" readonly value="{{ callbackUrl }}">
             <hr>
 
             {{ forms.autosuggestField({

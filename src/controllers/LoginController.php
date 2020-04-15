@@ -20,6 +20,7 @@ class LoginController extends FrontEndController
 
     /**
      * @return \yii\web\Response
+     * @throws \Throwable
      * @throws \craft\errors\MissingComponentException
      */
     public function actionLogin()
@@ -51,6 +52,14 @@ class LoginController extends FrontEndController
         return $this->redirect($redirectUrl);
     }
 
+    /**
+     * @return \yii\web\Response
+     * @throws \Throwable
+     * @throws \craft\errors\ElementNotFoundException
+     * @throws \craft\errors\MissingComponentException
+     * @throws \craft\errors\WrongEditionException
+     * @throws \yii\base\Exception
+     */
     public function actionCallback()
     {
         $redirectUrl = Craft::$app->getSession()->get(self::SESSION_REDIRECT_URL);

@@ -112,6 +112,8 @@ class ProvidersController extends BaseController
 
         $variables['settings'] = Socializer::$app->settings->getSettings();
         $variables['apiDocumentation'] = $this->getApiDocumentation($provider->type);
+        $variables['callbackUrl'] = Socializer::$app->settings->getCallbackUrl();
+
 
         return $this->renderTemplate('enupal-socializer/providers/_edit', $variables);
     }
