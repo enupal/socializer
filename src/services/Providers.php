@@ -180,7 +180,7 @@ class Providers extends Component
         $user = Craft::$app->getUser()->getIdentity();
 
         if (!$user){
-            $user = $this->registerUser($userProfile, $provider);
+            $user = $this->retrieveUser($userProfile, $provider);
         }
 
         Socializer::$app->tokens->registerToken($user, $provider);
@@ -194,6 +194,7 @@ class Providers extends Component
     }
 
     /**
+     * Register or get existing user
      * @param Profile $userProfile
      * @param Provider $provider
      * @return User
@@ -202,7 +203,7 @@ class Providers extends Component
      * @throws \craft\errors\WrongEditionException
      * @throws \yii\base\Exception
      */
-    private function registerUser(Profile $userProfile, Provider $provider): User
+    private function retrieveUser(Profile $userProfile, Provider $provider): User
     {
         if (is_null($userProfile->email)){
             throw new \Exception("Email address is not provided, please check the settings of your application");

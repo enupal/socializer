@@ -38,7 +38,9 @@ class LoginController extends FrontEndController
 
         try {
             if ($adapter->authenticate()){
-                $adapter->disconnect();
+                if (!Socializer::$app->providers->loginOrRegisterUser($provider)){
+                    Craft::$app->getSession()->setError(Craft::t('enupal-socializer', "Unable to authenticate user"));
+                }
             }
         }
         catch (\Exception $e) {
