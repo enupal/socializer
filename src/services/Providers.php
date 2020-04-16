@@ -111,6 +111,71 @@ class Providers extends Component
     }
 
     /**
+     * Removes providers and related records from the database given the ids
+     *
+     * @param $providers
+     *
+     * @return bool
+     * @throws \Throwable
+     */
+    public function deleteProviders($providers): bool
+    {
+        foreach ($providers as $key => $providerElement) {
+            $provider = $this->getProviderById($providerElement->id);
+
+            if ($provider) {
+                $this->deleteProvider($provider);
+            } else {
+                Craft::error("Can't delete the payment form with id: {$providerElement->id}", __METHOD__);
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * @param Provider $provider
+     *
+     * @return bool
+     * @throws \Throwable
+     */
+    public function deleteProvider(Provider $provider)
+    {
+        $transaction = Craft::$app->db->beginTransaction();
+
+        try {
+            // Delete the tokens
+            $tokens = (new Query())
+                ->select(['id'])
+                ->from(["{{%enupalsocializer_tokens}}"])
+                ->where(['providerId' => $provider->id])
+                ->all();
+
+            foreach ($tokens as $token) {
+                Craft::$app->elements->deleteElementById($token['id']);
+            }
+
+            // Delete the Provider Element
+            $success = Craft::$app->elements->deleteElementById($provider->id);
+
+            if (!$success) {
+                $transaction->rollback();
+                Craft::error("Couldn’t delete Provider", __METHOD__);
+
+                return false;
+            }
+
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $transaction->rollback();
+
+            throw $e;
+        }
+
+        return true;
+    }
+
+    /**
      * @param string $handle
      * @param int|null $siteId
      * @return array|Provider|null

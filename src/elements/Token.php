@@ -101,7 +101,7 @@ class Token extends Element
      */
     public static function hasTitles(): bool
     {
-        return true;
+        return false;
     }
 
     /**

@@ -11,11 +11,11 @@ namespace enupal\socializer\elements;
 use Craft;
 use craft\base\Element;
 use craft\behaviors\FieldLayoutBehavior;
-use craft\elements\actions\Delete;
 use craft\elements\actions\Restore;
 use craft\elements\db\ElementQueryInterface;
 use craft\helpers\UrlHelper;
 
+use enupal\socializer\elements\actions\Delete;
 use enupal\socializer\records\Provider as ProviderRecord;
 use craft\validators\UniqueValidator;
 use enupal\socializer\elements\db\ProvidersQuery;
@@ -131,7 +131,7 @@ class Provider extends Element
      */
     public static function hasTitles(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -217,9 +217,7 @@ class Provider extends Element
 
         // Delete
         $actions[] = Craft::$app->getElements()->createAction([
-            'type' => Delete::class,
-            'confirmationMessage' => Craft::t('enupal-socializer', 'Are you sure you want to delete the selected providers?'),
-            'successMessage' => 'Providers deleted'
+            'type' => Delete::class
         ]);
 
         $actions[] = Craft::$app->getElements()->createAction([
@@ -258,6 +256,7 @@ class Provider extends Element
     {
         $attributes = [];
         $attributes['name'] = ['label' => Craft::t('enupal-socializer','Name')];
+        $attributes['handle'] = ['label' => Craft::t('enupal-socializer','Handle')];
         $attributes['dateCreated'] = ['label' => Craft::t('enupal-socializer','Date Created')];
 
         return $attributes;
@@ -268,7 +267,7 @@ class Provider extends Element
      */
     protected static function defineDefaultTableAttributes(string $source): array
     {
-        $attributes = ['name', 'dateCreated'];
+        $attributes = ['name', 'handle' , 'dateCreated'];
 
         return $attributes;
     }
@@ -344,6 +343,9 @@ class Provider extends Element
         return new $this->type($this->getProviderConfig());
     }
 
+    /**
+     * @return array
+     */
     private function getProviderConfig()
     {
         // @todo add event to give a chance to update default config
@@ -362,7 +364,7 @@ class Provider extends Element
      */
     public function rules()
     {
-        $rules = [];
+        $rules = parent::rules();
         $rules[] = [['name', 'type'], 'required'];
         $rules[] = [['name', 'type'], 'string', 'max' => 255];
         $rules[] = [['name', 'type'], UniqueValidator::class, 'targetClass' => ProviderRecord::class];
