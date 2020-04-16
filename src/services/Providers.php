@@ -39,6 +39,61 @@ class Providers extends Component
         ];
     }
 
+    public function getUserProfileAsOptions()
+    {
+        // @Todo validate types
+        return [
+            [
+              'label' => 'Identifier',
+              'value' => 'identefier'
+            ],
+            [
+                'label' => 'Profile URL',
+                'value' => 'profileURL'
+            ],
+            [
+                'label' => 'WebSite URL',
+                'value' => 'webSiteURL'
+            ],
+            [
+                'label' => 'Photo',
+                'value' => 'photoURL'
+            ],
+            [
+                'label' => 'Identifier',
+                'value' => 'identefier'
+            ],
+            [
+                'label' => 'Identifier',
+                'value' => 'identefier'
+            ],
+            [
+                'label' => 'Identifier',
+                'value' => 'identefier'
+            ],
+            [
+                'label' => 'Identifier',
+                'value' => 'identefier'
+            ],
+            [
+                'label' => 'Identifier',
+                'value' => 'identefier'
+            ],
+            [
+                'label' => 'Identifier',
+                'value' => 'identefier'
+            ],
+            [
+                'label' => 'Identifier',
+                'value' => 'identefier'
+            ],
+            [
+                'label' => 'Identifier',
+                'value' => 'identefier'
+            ],
+        ];
+    }
+
     /**
      * @param bool $excludeCreated
      * @return array

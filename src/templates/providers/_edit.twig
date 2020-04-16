@@ -91,6 +91,30 @@
                 suggestEnvVars: true,
                 errors: provider.getErrors('clientSecret')
             }) }}
+
+            <hr>
+
+            {{ forms.editableTableField({
+                label: "User Field Mapping"|t('enupal-socializer'),
+                info: "Populate values to the user model",
+                id: 'fieldMapping',
+                name: 'fieldMapping',
+                minRows: provider.fieldMapping|length,
+                maxRows: provider.fieldMapping|length,
+                cols: {
+                    sourceFormField: {
+                        type: 'singleline',
+                        heading: "Provider Field"|t('enupal-socializer')
+                    },
+                    targetIntegrationField: {
+                        type: 'select',
+                        options: {},
+                        heading: "User Field"|t('enupal-socializer')
+                    }
+                },
+                rows: provider.fieldMapping,
+                errors: []|unique
+            }) }}
         </div>
     {% endnamespace %}
 {% endblock %}

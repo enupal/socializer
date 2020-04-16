@@ -104,6 +104,10 @@ class ProvidersController extends BaseController
             }
         }
 
+        if (is_string($provider->fieldMapping)){
+            $provider->fieldMapping = json_decode($provider->fieldMapping, true);
+        }
+
         $variables['providerId'] = $providerId;
         $variables['provider'] = $provider;
 
