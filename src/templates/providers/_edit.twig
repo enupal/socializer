@@ -58,14 +58,17 @@
 
     {% namespace 'fields' %}
         <div id="tab1">
-            <hr>
             {{ forms.field({
-                label: "OAuth credentials"|t('enupal-socializer'),
-                instructions: "Create a new application following the next <a target='_blank' href='"~ apiDocumentation ~"'>instructions</a>, and add the following redirect URI to your APP:"|t('enupal-socializer')
+                label: "Create a new application"|t('enupal-socializer'),
+                instructions: "Follow the next <a target='_blank' href='"~ apiDocumentation ~"'>instructions</a>, and add the following redirect URI to your APP:"|t('enupal-socializer')
             }, null) }}
-            <hr>
             <input type="text" class="text ltr fullwidth" readonly value="{{ callbackUrl }}">
             <hr>
+
+            {{ forms.field({
+                label: "OAuth credentials"|t('enupal-socializer'),
+                instructions: "Copy your Client ID and Client Secret from your App, <b>enable</b> this provider and finally click on Save"|t('enupal-socializer')
+            }, null) }}
 
             {{ forms.autosuggestField({
                 label: "Client ID"|t('enupal-socializer'),
