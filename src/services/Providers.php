@@ -11,6 +11,10 @@ namespace enupal\socializer\services;
 use Craft;
 use craft\db\Query;
 use craft\elements\User;
+use craft\fields\Dropdown;
+use craft\fields\Email;
+use craft\fields\Number;
+use craft\fields\PlainText;
 use enupal\socializer\elements\Provider;
 use enupal\socializer\records\Provider as ProviderRecord;
 use Hybridauth\Provider\Discord;
@@ -39,58 +43,231 @@ class Providers extends Component
         ];
     }
 
-    public function getUserProfileAsOptions()
+    /**
+     * @return array
+     */
+    public function getUserFieldsAsOptions()
     {
-        // @Todo validate types
+        $user = new User();
+        $fields = $user->getFieldLayout()->getFields();
+        $options = [[
+            'label' => 'None',
+            'value' => ''
+        ]];
+
+        foreach ($fields as $field) {
+            if (!$this->validateFieldClass($field)){
+                continue;
+            }
+
+            $option = [
+                'label' => $field->name. ' ('.$field->handle.')',
+                'value' => $field->handle
+            ];
+
+            $options[] = $option;
+        }
+
+        return $options;
+    }
+
+    /**
+     * @param $field
+     * @return bool
+     */
+    private function validateFieldClass($field)
+    {
+        $fieldClass = get_class($field);
+
+        $supportedClasses = [
+          PlainText::class => 1,
+          Dropdown::class => 1
+        ];
+
+        if (isset($supportedClasses[$fieldClass])){
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return array
+     */
+    public function getUserProfileFieldsAsOptions()
+    {
         return [
             [
-              'label' => 'Identifier',
-              'value' => 'identefier'
+                'label' => 'Email',
+                'value' => 'email',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
+            ],
+            [
+                'label' => 'Identifier',
+                'value' => 'identefier',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Dropdown::class
+                ]
             ],
             [
                 'label' => 'Profile URL',
-                'value' => 'profileURL'
+                'value' => 'profileURL',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
             ],
             [
                 'label' => 'WebSite URL',
-                'value' => 'webSiteURL'
+                'value' => 'webSiteURL',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
             ],
             [
-                'label' => 'Photo',
-                'value' => 'photoURL'
+                'label' => 'Photo URL',
+                'value' => 'photoURL',
+                'compatibleCraftFields' => [
+                ]
             ],
             [
-                'label' => 'Identifier',
-                'value' => 'identefier'
+                'label' => 'Display Name',
+                'value' => 'displayName',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Dropdown::class
+                ]
             ],
             [
-                'label' => 'Identifier',
-                'value' => 'identefier'
+                'label' => 'Description',
+                'value' => 'description',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
             ],
             [
-                'label' => 'Identifier',
-                'value' => 'identefier'
+                'label' => 'First Name',
+                'value' => 'firstName',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
             ],
             [
-                'label' => 'Identifier',
-                'value' => 'identefier'
+                'label' => 'Last Name',
+                'value' => 'lastName',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
             ],
             [
-                'label' => 'Identifier',
-                'value' => 'identefier'
+                'label' => 'Gender',
+                'value' => 'gender',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Dropdown::class
+                ]
             ],
             [
-                'label' => 'Identifier',
-                'value' => 'identefier'
+                'label' => 'Language',
+                'value' => 'language',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
             ],
             [
-                'label' => 'Identifier',
-                'value' => 'identefier'
+                'label' => 'Age',
+                'value' => 'age',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Number::class
+                ]
             ],
             [
-                'label' => 'Identifier',
-                'value' => 'identefier'
+                'label' => 'Birth Day',
+                'value' => 'birthDay',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Number::class
+                ]
             ],
+            [
+                'label' => 'Birth Month',
+                'value' => 'birthMonth',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Number::class
+                ]
+            ],
+            [
+                'label' => 'Birth Year',
+                'value' => 'birthYear',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Number::class
+                ]
+            ],
+            [
+                'label' => 'Email Verified',
+                'value' => 'emailVerified',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Email::class
+                ]
+            ],
+            [
+                'label' => 'Phone',
+                'value' => 'phone',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
+            ],
+            [
+                'label' => 'Address',
+                'value' => 'address',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
+            ],
+            [
+                'label' => 'Country',
+                'value' => 'country',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Dropdown::class
+                ]
+            ],
+            [
+                'label' => 'Region',
+                'value' => 'region',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Dropdown::class
+                ]
+            ],
+            [
+                'label' => 'City',
+                'value' => 'city',
+                'compatibleCraftFields' => [
+                    PlainText::class,
+                    Dropdown::class
+                ]
+            ],
+            [
+                'label' => 'Zip',
+                'value' => 'zip',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
+            ],
+            [
+                'label' => 'Data (JSON)',
+                'value' => 'data',
+                'compatibleCraftFields' => [
+                    PlainText::class
+                ]
+            ]
         ];
     }
 

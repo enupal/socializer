@@ -103,12 +103,14 @@
                 maxRows: provider.fieldMapping|length,
                 cols: {
                     sourceFormField: {
-                        type: 'singleline',
+                        type: 'select',
+                        readonly: true,
+                        options: userProfileFields,
                         heading: "Provider Field"|t('enupal-socializer')
                     },
-                    targetIntegrationField: {
+                    targetUserField: {
                         type: 'select',
-                        options: {},
+                        options: supportedUserFields,
                         heading: "User Field"|t('enupal-socializer')
                     }
                 },
