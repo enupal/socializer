@@ -96,15 +96,17 @@
 
             {{ forms.editableTableField({
                 label: "User Field Mapping"|t('enupal-socializer'),
+                instructions: "Populate the User model with fields values from your Provider",
                 info: "Populate values to the user model",
                 id: 'fieldMapping',
                 name: 'fieldMapping',
-                minRows: provider.fieldMapping|length,
-                maxRows: provider.fieldMapping|length,
+                staticRows: true,
+                minRows: fieldMapping|length,
+                maxRows: fieldMapping|length,
                 cols: {
                     sourceFormField: {
                         type: 'select',
-                        readonly: true,
+                        class: 'sourceField',
                         options: userProfileFields,
                         heading: "Provider Field"|t('enupal-socializer')
                     },
@@ -114,12 +116,22 @@
                         heading: "User Field"|t('enupal-socializer')
                     }
                 },
-                rows: provider.fieldMapping,
+                rows: fieldMapping,
                 errors: []|unique
             }) }}
         </div>
     {% endnamespace %}
 {% endblock %}
+
+{% do view.registerAssetBundle("enupal\\socializer\\web\\assets\\provider\\ProviderAsset") %}
+
+{% js %}
+    $(document).ready(function() {
+
+    var userProfileFields = {{ userProfileFields|json_encode()|raw }};
+    new SocializerProvider(userProfileFields);
+    });
+{% endjs %}
 
 {% block details %}
     {% namespace 'fields' %}

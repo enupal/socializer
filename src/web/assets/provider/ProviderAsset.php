@@ -24,7 +24,7 @@ class ProviderAsset extends AssetBundle
         ];
 
         $this->js = [
-            'dist/TableRowAdditionalInfoIcon.js'
+            'dist/js/provider.min.js'
         ];
 
         parent::init();

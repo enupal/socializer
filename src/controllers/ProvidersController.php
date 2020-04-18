@@ -119,8 +119,29 @@ class ProvidersController extends BaseController
         $variables['callbackUrl'] = Socializer::$app->settings->getCallbackUrl();
         $variables['supportedUserFields'] = Socializer::$app->providers->getUserFieldsAsOptions();
         $variables['userProfileFields'] = Socializer::$app->providers->getUserProfileFieldsAsOptions();
+        $variables['fieldMapping'] = $provider->fieldMapping ?? $this->getDefaultFieldMapping();
+        $userProfileFields = Socializer::$app->providers->getUserProfileFieldsAsOptions();
+        $variables['userProfileFields'] = $userProfileFields;
 
         return $this->renderTemplate('enupal-socializer/providers/_edit', $variables);
+    }
+
+    /**
+     * @return array
+     */
+    private function getDefaultFieldMapping()
+    {
+        $userProfileFields = Socializer::$app->providers->getUserProfileFieldsAsOptions();
+        $options = [];
+        foreach ($userProfileFields as $item) {
+            $option = [
+                'sourceFormField' => $item['value'],
+                'targetUserField' => ''
+            ];
+            $options[] = $option;
+        }
+
+        return $options;
     }
 
     /**
