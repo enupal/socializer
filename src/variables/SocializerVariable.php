@@ -48,4 +48,12 @@ class SocializerVariable extends Behavior
     {
         return Socializer::$app->providers->getProviderTypesAsOptions();
     }
+
+    /**
+     * @return bool|\craft\base\Model|null
+     */
+    public function getSettings()
+    {
+        return Socializer::getInstance()->getSettings();
+    }
 }

@@ -518,6 +518,7 @@ class Providers extends Component
         $user->firstName = $userProfile->firstName;
         $user->lastName = $userProfile->lastName;
 
+        // validate populate
         $user = $this->populateUserModel($user, $provider, $userProfile);
 
         if (!Craft::$app->elements->saveElement($user)){

@@ -127,7 +127,6 @@
 
 {% js %}
     $(document).ready(function() {
-
     var userProfileFields = {{ userProfileFields|json_encode()|raw }};
     new SocializerProvider(userProfileFields);
     });
