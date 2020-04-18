@@ -106,7 +106,7 @@ class Providers extends Component
             ],
             [
                 'label' => 'Identifier',
-                'value' => 'identefier',
+                'value' => 'identifier',
                 'compatibleCraftFields' => [
                     PlainText::class,
                     Dropdown::class
@@ -512,12 +512,13 @@ class Providers extends Component
         }
 
         Craft::$app->requireEdition(Craft::Pro);
-        // @todo add field mapping and use provider passed as param
         $user = new User();
         $user->email = $userProfile->email;
         $user->username = $userProfile->email;
         $user->firstName = $userProfile->firstName;
         $user->lastName = $userProfile->lastName;
+
+        $user = $this->populateUserModel($user, $provider, $userProfile);
 
         if (!Craft::$app->elements->saveElement($user)){
             Craft::error("Unable to create user: ".json_encode($user->getErrors()));
@@ -526,6 +527,25 @@ class Providers extends Component
 
         return $user;
     }
+
+    /**
+     * @param User $user
+     * @param Provider $provider
+     * @param Profile $profile
+     * @return User
+     */
+    public function populateUserModel(User $user, Provider $provider, Profile $profile)
+    {
+        foreach ($provider->fieldMapping as $item) {
+            if(isset($item['targetUserField']) && $item['targetUserField']){
+                $profileValue = $profile->{$item['sourceFormField']};
+                $user->setFieldValue($item['targetUserField'], $profileValue);
+            }
+        }
+
+        return $user;
+    }
+
 
     /**
      * @param $provider Provider
