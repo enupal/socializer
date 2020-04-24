@@ -5,5 +5,5 @@ mix
 // Forms
   // Front-end
   .js([
-    'src/web/assets/provider/src/js/provider.js',
-  ], 'src/web/assets/provider/dist/js/provider.min.js');
+    'src/web/assets/fieldmapping/src/js/fieldmapping.js',
+  ], 'src/web/assets/fieldmapping/dist/js/fieldmapping.min.js');
