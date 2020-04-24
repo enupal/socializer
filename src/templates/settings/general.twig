@@ -31,10 +31,19 @@
                 on: settings.enableUserSignUp,
                 onLabel: "On"|t('enupal-socializer'),
                 offLabel: "Off"|t('enupal-socializer'),
-                errors: settings.getErrors('enableUserSignUp')
+                errors: settings.getErrors('enableUserSignUp'),
+                toggle: "user-group"
             }) }}
-            <hr>
-
+            <div id="user-group" class="{% if not settings.enableUserSignUp %} hidden {% endif %}">
+                {{ forms.selectField({
+                    label: "Default User Group"|t('enupal-stripe'),
+                    id: 'userGroupId',
+                    instructions: 'Default user group that will be granted to the user when sign up',
+                    name: 'userGroupId',
+                    options: craft.socializer.app.settings.getUserGroups() | map((ug) => { value: ug.id, label: ug.name }),
+                value: settings.userGroupId
+                }) }}
+            </div>
         {% endnamespace %}
 
     </div>

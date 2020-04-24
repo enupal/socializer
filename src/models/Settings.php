@@ -14,7 +14,7 @@ use enupal\socializer\Socializer;
 
 class Settings extends Model
 {
-    public $userGroups = [];
+    public $userGroupId = null;
     public $enableUserSignUp = 1;
     public $enableFieldMapping = 1;
     public $enableFieldMappingPerProvider = 0;

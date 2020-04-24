@@ -497,6 +497,11 @@ class Providers extends Component
             $user = $this->retrieveUser($userProfile, $provider);
         }
 
+        if (!$user){
+            Craft::error("Not user to login", __METHOD__);
+            return false;
+        }
+
         Socializer::$app->tokens->registerToken($user, $provider);
 
         if (!Craft::$app->getUser()->login($user)) {
@@ -527,6 +532,11 @@ class Providers extends Component
 
         if ($user) {
             return $user;
+        }
+        $settings = Socializer::$app->settings->getSettings();
+
+        if (!$settings->enableUserSignUp){
+            return null;
         }
 
         Craft::$app->requireEdition(Craft::Pro);
@@ -574,6 +584,13 @@ class Providers extends Component
                 if ($field){
                     $user->setFieldValue($item['targetUserField'], $profileValue);
                 }
+            }
+        }
+
+        if ($settings->userGroupId){
+            $userGroup = Craft::$app->getUserGroups()->getGroupById($settings->userGroupId);
+            if ($userGroup){
+                Craft::$app->getUsers()->assignUserToGroups($user->id, [$userGroup->id]);
             }
         }
 

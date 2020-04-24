@@ -109,4 +109,19 @@ class Settings extends Component
 
         return $settings->fieldMapping ?? Socializer::$app->providers->getDefaultFieldMapping();
     }
+
+    /**
+     * @return array|\craft\models\UserGroup[]
+     */
+    public function getUserGroups()
+    {
+        $userGroups = [
+            ["name" => "None", "id" => ""]
+        ];
+        $craftUserGroups = Craft::$app->getUserGroups()->getAllGroups();
+
+        $userGroups = array_merge($userGroups, $craftUserGroups);
+
+        return $userGroups;
+    }
 }
