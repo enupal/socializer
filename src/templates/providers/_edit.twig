@@ -25,6 +25,13 @@
     }
 } %}
 
+{% if settings.enableFieldMapping and settings.enableFieldMappingPerProvider %}
+    {% set tabs = tabs|merge({fieldmapping: {
+        label: "User Field Mapping"|t,
+        url: '#fields-tab2',
+    }}) %}
+{% endif %}
+
 {% block actionButton %}
     <input type="hidden" name="action" value="enupal-socializer/providers/save-provider">
     {{ redirectInput('enupal-socializer/providers') }}
@@ -92,8 +99,8 @@
                 errors: provider.getErrors('clientSecret')
             }) }}
 
-            <hr>
-
+        </div>
+        <div id="tab2" class="hidden">
             {{ forms.editableTableField({
                 label: "User Field Mapping"|t('enupal-socializer'),
                 instructions: "Populate the User model with fields values from your Provider",
@@ -120,15 +127,16 @@
                 errors: []|unique
             }) }}
         </div>
+
     {% endnamespace %}
 {% endblock %}
 
-{% do view.registerAssetBundle("enupal\\socializer\\web\\assets\\provider\\ProviderAsset") %}
+{% do view.registerAssetBundle("enupal\\socializer\\web\\assets\\fieldmapping\\FieldMappingAsset") %}
 
 {% js %}
     $(document).ready(function() {
     var userProfileFields = {{ userProfileFields|json_encode()|raw }};
-    new SocializerProvider(userProfileFields);
+    new SocializerFieldMapping(userProfileFields);
     });
 {% endjs %}
 

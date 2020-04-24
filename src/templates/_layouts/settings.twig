@@ -15,6 +15,12 @@
                    {% if selectedSidebarItem == 'general' %}class="sel"{% endif %}>{{ "General"|t('enupal-socializer') }}
                 </a>
             </li>
+
+            <li>
+                <a href="{{ cpUrl('enupal-socializer/settings/field-mapping') }}"
+                   {% if selectedSidebarItem == 'field-mapping' %}class="sel"{% endif %}>{{ "User Field Mapping"|t('enupal-socializer') }}
+                </a>
+            </li>
         </ul>
     </nav>
 

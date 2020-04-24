@@ -99,4 +99,14 @@ class Settings extends Component
 
         return $plugin['uid'] ?? null;
     }
+
+    /**
+     * @return array
+     */
+    public function getGlobalFieldMapping()
+    {
+        $settings = $this->getSettings();
+
+        return $settings->fieldMapping ?? Socializer::$app->providers->getDefaultFieldMapping();
+    }
 }

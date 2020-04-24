@@ -6,25 +6,20 @@
  * @copyright Copyright (c) 2019 Enupal LLC
  */
 
-namespace enupal\socializer\web\assets\provider;
+namespace enupal\socializer\web\assets\fieldmapping;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
-class ProviderAsset extends AssetBundle
+class FieldMappingAsset extends AssetBundle
 {
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = '@enupal/socializer/web/assets/provider';
-
-        // define the dependencies
-        $this->depends = [
-            CpAsset::class
-        ];
+        $this->sourcePath = '@enupal/socializer/web/assets/fieldmapping';
 
         $this->js = [
-            'dist/js/provider.min.js'
+            'dist/js/fieldmapping.min.js'
         ];
 
         parent::init();

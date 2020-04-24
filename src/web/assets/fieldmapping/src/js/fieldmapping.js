@@ -1,6 +1,6 @@
 /* global Craft */
 
-class SocializerProvider {
+class SocializerFieldMapping {
 
     constructor(profileFields) {
         const self = this;
@@ -23,4 +23,4 @@ class SocializerProvider {
     }
 }
 
-window.SocializerProvider = SocializerProvider;
+window.SocializerFieldMapping = SocializerFieldMapping;

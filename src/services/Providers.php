@@ -272,6 +272,24 @@ class Providers extends Component
     }
 
     /**
+     * @return array
+     */
+    public function getDefaultFieldMapping()
+    {
+        $userProfileFields = Socializer::$app->providers->getUserProfileFieldsAsOptions();
+        $options = [];
+        foreach ($userProfileFields as $item) {
+            $option = [
+                'sourceFormField' => $item['value'],
+                'targetUserField' => ''
+            ];
+            $options[] = $option;
+        }
+
+        return $options;
+    }
+
+    /**
      * @param bool $excludeCreated
      * @return array
      * @throws \ReflectionException
@@ -537,10 +555,25 @@ class Providers extends Component
      */
     public function populateUserModel(User $user, Provider $provider, Profile $profile)
     {
-        foreach ($provider->fieldMapping as $item) {
+        $settings = Socializer::$app->settings->getSettings();
+
+        if (!$settings->enableFieldMapping) {
+            return $user;
+        }
+
+        $fieldMapping = Socializer::$app->settings->getGlobalFieldMapping();
+
+        if ($settings->enableFieldMappingPerProvider) {
+            $fieldMapping = $provider->fieldMapping ?? $fieldMapping;
+        }
+
+        foreach ($fieldMapping as $item) {
             if(isset($item['targetUserField']) && $item['targetUserField']){
                 $profileValue = $profile->{$item['sourceFormField']};
-                $user->setFieldValue($item['targetUserField'], $profileValue);
+                $field = $user->getFieldLayout()->getFieldByHandle($item['targetUserField']);
+                if ($field){
+                    $user->setFieldValue($item['targetUserField'], $profileValue);
+                }
             }
         }
 

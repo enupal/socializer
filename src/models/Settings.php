@@ -17,5 +17,7 @@ class Settings extends Model
     public $userGroups = [];
     public $enableUserSignUp = 1;
     public $enableFieldMapping = 1;
+    public $enableFieldMappingPerProvider = 0;
+    public $fieldMapping;
     public $enableCp = 1;
 }

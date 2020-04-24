@@ -56,4 +56,12 @@ class SocializerVariable extends Behavior
     {
         return Socializer::getInstance()->getSettings();
     }
+
+    /**
+     * @return \enupal\socializer\services\App
+     */
+    public function app()
+    {
+        return Socializer::$app;
+    }
 }
