@@ -18,11 +18,42 @@ use craft\fields\PlainText;
 use craft\helpers\UrlHelper;
 use enupal\socializer\elements\Provider;
 use enupal\socializer\records\Provider as ProviderRecord;
+use Hybridauth\Provider\Amazon;
+use Hybridauth\Provider\Authentiq;
+use Hybridauth\Provider\BitBucket;
+use Hybridauth\Provider\Blizzard;
 use Hybridauth\Provider\Discord;
+use Hybridauth\Provider\Disqus;
+use Hybridauth\Provider\Dribbble;
 use Hybridauth\Provider\Facebook;
+use Hybridauth\Provider\Foursquare;
+use Hybridauth\Provider\GitHub;
+use Hybridauth\Provider\GitLab;
+use Hybridauth\Provider\Instagram;
 use Hybridauth\Provider\LinkedIn;
+use Hybridauth\Provider\Mailru;
+use Hybridauth\Provider\MicrosoftGraph;
+use Hybridauth\Provider\Odnoklassniki;
+use Hybridauth\Provider\ORCID;
+use Hybridauth\Provider\QQ;
+use Hybridauth\Provider\Reddit;
+use Hybridauth\Provider\Slack;
+use Hybridauth\Provider\Spotify;
+use Hybridauth\Provider\StackExchange;
+use Hybridauth\Provider\Steam;
+use Hybridauth\Provider\SteemConnect;
+use Hybridauth\Provider\Strava;
+use Hybridauth\Provider\Telegram;
+use Hybridauth\Provider\Tumblr;
+use Hybridauth\Provider\TwitchTV;
 use Hybridauth\Provider\Twitter;
 use Hybridauth\Provider\Google;
+use Hybridauth\Provider\Vkontakte;
+use Hybridauth\Provider\WeChat;
+use Hybridauth\Provider\WindowsLive;
+use Hybridauth\Provider\WordPress;
+use Hybridauth\Provider\Yahoo;
+use Hybridauth\Provider\Yandex;
 use Hybridauth\User\Profile;
 use yii\base\Component;
 use enupal\socializer\Socializer;
@@ -56,11 +87,42 @@ class Providers extends Component
     public function getAllProviderTypes()
     {
         return [
+            Amazon::class,
+            Authentiq::class,
+            BitBucket::class,
+            Blizzard::class,
+            Discord::class,
+            Disqus::class,
+            Dribbble::class,
             Facebook::class,
-            Twitter::class,
+            Foursquare::class,
+            GitHub::class,
+            GitLab::class,
             Google::class,
+            Instagram::class,
             LinkedIn::class,
-            Discord::class
+            Mailru::class,
+            MicrosoftGraph::class,
+            Odnoklassniki::class,
+            ORCID::class,
+            Reddit::class,
+            Slack::class,
+            Spotify::class,
+            StackExchange::class,
+            Steam::class,
+            Strava::class,
+            SteemConnect::class,
+            Telegram::class,
+            Tumblr::class,
+            TwitchTV::class,
+            Twitter::class,
+            Vkontakte::class,
+            WeChat::class,
+            WindowsLive::class,
+            WordPress::class,
+            Yandex::class,
+            Yahoo::class,
+            QQ::class
         ];
     }
 
