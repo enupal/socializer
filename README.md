@@ -1,43 +1,39 @@
-# Socializer plugin for Craft CMS 3.x
+<p align="center">
+	<a href="https://enupal.com/en/craft-plugins/stripe-payments" target="_blank">
+	<img width="212" height="212" src="https://enupal.com/assets/docs/stripe-payments-icon.svg" alt="Stripe Payments for Craft CMS 3.x"></a>
+</p>
 
-Sign in, Register and share
+# Socializer Plugin for Craft CMS
 
-![Screenshot](resources/img/plugin-logo.png)
+Stripe Payments allows customers sign up for recurring and one-time payments with Stripe, perfect for orders, donations, subscriptions, and events. Create simple payment forms in seconds easily without coding. For Craft CMS 3.x
 
-## Requirements
+![Screenshot](https://enupal.com/assets/docs/stripe-payments-new-checkout.png)
 
-This plugin requires Craft CMS 3.0.0-beta.23 or later.
+## Features
 
-## Installation
+### Enables users to login to your website through more than 35 social networks.
 
-To install the plugin, follow these instructions.
+ * More than 35 social networks available: Facebook, Twitter, Slack, Instagram, Google, Github, LinkedIn, Amazon, Discord, Spotify, TwitchTV and much more!
+ * User Field Mapping, allow setup your field mapping for when a user is registered, social data can be stored as JSON
+ * CP login
+ * Retrieve access tokens easily for business logic.
+ * Events for developers
 
-1. Open your terminal and go to your Craft project:
+## Documentation
 
-        cd /path/to/project
+https://enupal.com/craft-plugins/socializer/docs
 
-2. Then tell Composer to load the plugin:
+## Socializer Support
 
-        composer require enupal/socializer
+* Send us a note at: support@enupal.com
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Socializer.
+* Create an [issue](https://github.com/enupal/socializer/issues) on Github
 
-## Socializer Overview
+------------------------------------------------------------
 
--Insert text here-
+Brought to you by [enupal](https://enupal.com)
 
-## Configuring Socializer
-
--Insert text here-
-
-## Using Socializer
-
--Insert text here-
-
-## Socializer Roadmap
-
-Some things to do, and ideas for potential features:
-
-* Release it
-
-Brought to you by [Enupal](https://enupal.com/)
+<p align="center">
+  <a href="https://enupal.com" target="_blank">
+  <img width="169" height="35" src="https://enupal.com/assets/docs/enupal-logo.png" alt="Enupal"></a>
+</p>
