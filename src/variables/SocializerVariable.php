@@ -42,6 +42,15 @@ class SocializerVariable extends Behavior
     }
 
     /**
+     * @param string $handle
+     * @return array|Provider|null
+     */
+    public function getProviderByHandle(string $handle)
+    {
+        return Socializer::$app->providers->getProviderByHandle($handle);
+    }
+
+    /**
      * @return array
      * @throws \ReflectionException
      */

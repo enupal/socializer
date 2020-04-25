@@ -59,4 +59,23 @@ class Tokens extends Component
 
         return true;
     }
+
+    /**
+     * @param int $providerId
+     * @return array|\craft\base\ElementInterface|null
+     */
+    public function getCurrentUserToken(int $providerId)
+    {
+        $user = $user = Craft::$app->getUser()->getIdentity();
+
+        if ($user){
+            /** @var Token $token */
+            $token = $this->getToken($providerId, $user->id);
+            if ($token){
+                return $token->accessToken;
+            }
+        }
+
+        return null;
+    }
 }

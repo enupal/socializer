@@ -352,11 +352,35 @@ class Provider extends Element
         return [
             'callback' => Socializer::$app->settings->getCallbackUrl(),
             'keys' => [
-                'id' => Craft::parseEnv($this->clientId),
-                'secret' => Craft::parseEnv($this->clientSecret)
+                'id' => $this->getClientId(),
+                'secret' => $this->getClientSecret()
             ],
             'includeEmail' => true
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientId()
+    {
+        return Craft::parseEnv($this->clientId);
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientSecret()
+    {
+        return Craft::parseEnv($this->clientSecret);
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getCurrentUserToken()
+    {
+        return Socializer::$app->tokens->getCurrentUserToken($this->id);
     }
 
     /**
