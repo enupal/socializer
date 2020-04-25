@@ -15,6 +15,7 @@ use craft\fields\Dropdown;
 use craft\fields\Email;
 use craft\fields\Number;
 use craft\fields\PlainText;
+use craft\helpers\UrlHelper;
 use enupal\socializer\elements\Provider;
 use enupal\socializer\records\Provider as ProviderRecord;
 use Hybridauth\Provider\Discord;
@@ -25,10 +26,30 @@ use Hybridauth\Provider\Google;
 use Hybridauth\User\Profile;
 use yii\base\Component;
 use enupal\socializer\Socializer;
+use yii\base\NotSupportedException;
 use yii\db\Exception;
 
 class Providers extends Component
 {
+    /**
+     * @param $handle
+     * @param $options
+     * @return string
+     * @throws NotSupportedException
+     * @throws \yii\base\Exception
+     */
+    public function loginUrl($handle, $options = [])
+    {
+        $provider = $this->getProviderByHandle($handle);
+        if (is_null($provider)){
+            throw new NotSupportedException('Provider not found or disabled: '.$handle);
+        }
+
+        $options['provider'] = $handle;
+
+        return UrlHelper::siteUrl('socializer/login', $options);
+    }
+
     /**
      * @return array
      */

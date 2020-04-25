@@ -10,6 +10,7 @@
 namespace enupal\socializer\controllers;
 
 use Craft;
+use craft\helpers\UrlHelper;
 use enupal\socializer\Socializer;
 use enupal\stripe\controllers\FrontEndController;
 
@@ -27,13 +28,14 @@ class LoginController extends FrontEndController
     {
         $providerHandle = Craft::$app->getRequest()->getParam('provider');
         $provider = Socializer::$app->providers->getProviderByHandle($providerHandle);
+        $redirect = $this->getRedirectUrl();
 
         if (is_null($provider)) {
             throw new \Exception(Craft::t('enupal-socializer','Provider not found or disabled'));
         }
 
-        $redirectUrl = Craft::$app->getRequest()->referrer;
-        Craft::$app->getSession()->set(self::SESSION_REDIRECT_URL, Craft::$app->getRequest()->referrer);
+        $redirectUrl = $redirect ?? Craft::$app->getRequest()->referrer;
+        Craft::$app->getSession()->set(self::SESSION_REDIRECT_URL, $redirectUrl);
         Craft::$app->getSession()->set(self::SESSION_PROVIDER_HANDLE, $providerHandle);
         $adapter = $provider->getAdapter();
 
@@ -49,6 +51,42 @@ class LoginController extends FrontEndController
             throw new \Exception($e->getMessage());
         }
 
+        return $this->handleRedirect();
+    }
+
+    /**
+     * @return mixed|string
+     * @throws \yii\base\Exception
+     */
+    private function getRedirectUrl()
+    {
+        $redirect = Craft::$app->getRequest()->getParam('redirect');
+
+        if ($redirect){
+            $redirect = UrlHelper::siteUrl($redirect);
+        }
+
+        return $redirect;
+    }
+
+    /**
+     * @return \yii\web\Response
+     * @throws \Twig\Error\LoaderError
+     * @throws \Twig\Error\SyntaxError
+     * @throws \craft\errors\MissingComponentException
+     */
+    private function handleRedirect()
+    {
+        $redirectUrl = Craft::$app->getSession()->get(self::SESSION_REDIRECT_URL);
+        $user = Craft::$app->getUser()->getIdentity();
+
+        if ($user){
+            $variables['user'] = $user;
+            $redirectUrl = Craft::$app->getView()->renderString($redirectUrl, $variables);
+        }
+
+        $this->restoreSession();
+
         return $this->redirect($redirectUrl);
     }
 
@@ -62,9 +100,7 @@ class LoginController extends FrontEndController
      */
     public function actionCallback()
     {
-        $redirectUrl = Craft::$app->getSession()->get(self::SESSION_REDIRECT_URL);
         $providerHandle = Craft::$app->getSession()->get(self::SESSION_PROVIDER_HANDLE);
-
         $provider = Socializer::$app->providers->getProviderByHandle($providerHandle);
 
         if (is_null($provider)){
@@ -75,9 +111,7 @@ class LoginController extends FrontEndController
             Craft::$app->getSession()->setError(Craft::t('enupal-socializer', "Unable to authenticate user"));
         }
 
-        $this->restoreSession();
-
-        return $this->redirect($redirectUrl);
+        return $this->handleRedirect();
     }
 
     /**

@@ -11,6 +11,7 @@ namespace enupal\socializer\variables;
 use enupal\socializer\elements\db\ProvidersQuery;
 use enupal\socializer\elements\Provider;
 use Craft;
+use enupal\socializer\services\Providers;
 use enupal\socializer\Socializer;
 use yii\base\Behavior;
 
@@ -63,5 +64,17 @@ class SocializerVariable extends Behavior
     public function app()
     {
         return Socializer::$app;
+    }
+
+    /**
+     * @param $handle
+     * @param $options
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \yii\base\NotSupportedException
+     */
+    public function loginUrl($handle, $options = [])
+    {
+        return Socializer::$app->providers->loginUrl($handle, $options);
     }
 }
