@@ -1,0 +1,31 @@
+{#
+/**
+ * Socializer plugin for Craft CMS 3.x
+ *
+ * @link      https://enupal.com/
+ * @copyright Copyright (c) 2019 Enupal LLC
+ */
+
+#}
+
+{% import "_includes/forms" as forms %}
+<div class="meta">
+    {{ forms.textField({
+        first: true,
+        label: "Handle <span class='info'>How you’ll refer to this Provider in the templates.</span>"|t('enupal-socializer'),
+        id: 'handle',
+        name: 'handle',
+        readonly: true,
+        value: provider.handle,
+        errors: provider.getErrors('handle'),
+        autofocus: true,
+        required: true
+    }) }}
+
+    {{ forms.lightswitchField({
+        label: "Enabled"|t('enupal-socializer'),
+        id: 'enabled',
+        name: 'enabled',
+        on: provider.enabled
+    }) }}
+</div>

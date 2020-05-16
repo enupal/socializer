@@ -1,0 +1,158 @@
+{#
+/**
+ * Socializer plugin for Craft CMS 3.x
+ *
+ * @link      https://enupal.com/
+ * @copyright Copyright (c) 2019 Enupal LLC
+ */
+
+#}
+
+{% extends "enupal-socializer/_layouts/base" %}
+{% import "_includes/forms" as forms %}
+{% set crumbs = [
+    { label: "Providers"|t('enupal-socializer'), url: cpUrl('enupal-socializer/providers') }
+] %}
+
+{% set title = 'Edit Provider'|t('enupal-socializer') %}
+{% set fullPageForm = true %}
+{% set saveShortcutRedirect = continueEditingUrl %}
+
+{% set tabs = {
+    general:  {
+        label: "General"|t,
+        url: '#fields-tab1',
+    }
+} %}
+
+{% if settings.enableFieldMapping and settings.enableFieldMappingPerProvider %}
+    {% set tabs = tabs|merge({fieldmapping: {
+        label: "User Field Mapping"|t,
+        url: '#fields-tab2',
+    }}) %}
+{% endif %}
+
+{% block actionButton %}
+    <input type="hidden" name="action" value="enupal-socializer/providers/save-provider">
+    {{ redirectInput('enupal-socializer/providers') }}
+    <input type="hidden" id="providerId" name="providerId" value="{{ provider.id is defined ? provider.id : '' }}">
+
+    <div class="btngroup submit first">
+        <input type="submit" class="btn submit" value="{{ 'Save'|t('enupal-socializer') }}">
+        {% if provider.id != null %}
+            <div class="btn submit menubtn"></div>
+            <div class="menu">
+                <ul>
+                    <li><a class="formsubmit" data-redirect="{{('enupal-socializer/providers/edit/'~provider.id)|hash}}">{{ "Save and continue editing"|t('enupal-socializer') }} <span class="shortcut">⌘S</span></a></li>
+                </ul>
+                <hr>
+                <ul>
+                    <li><a class="formsubmit error"
+                           data-action="enupal-socializer/providers/delete-provider"
+                           data-confirm='{{ "Are you sure you want to delete the selected providers, and all of it's tokens?"|t('enupal-socializer') }}'
+                           data-redirect="{{ 'enupal-socializer/providers'|hash }}">{{ "Delete"|t('enupal-socializer') }}</a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block content %}
+    <input type="hidden" name="action" value="enupal-socializer/providers/save-provider">
+    <input type="hidden" name="handle" value="{{ provider.handle }}">
+    <input type="hidden" name="providerId" value="{{ providerId }}">
+
+    {% namespace 'fields' %}
+        <div id="tab1">
+            {{ forms.field({
+                label: "Create a new application"|t('enupal-socializer'),
+                instructions: "Follow the next <a target='_blank' href='"~ apiDocumentation ~"'>instructions</a>, and add the following redirect URI to your APP:"|t('enupal-socializer')
+            }, null) }}
+            <input type="text" class="text ltr fullwidth" readonly value="{{ callbackUrl }}">
+            <hr>
+
+            {{ forms.field({
+                label: "OAuth credentials"|t('enupal-socializer'),
+                instructions: "Copy your Client ID and Client Secret from your App, <b>enable</b> this provider and finally click on Save"|t('enupal-socializer')
+            }, null) }}
+
+            {{ forms.autosuggestField({
+                label: "Client ID"|t('enupal-socializer'),
+                id: 'clientId',
+                name: 'clientId',
+                value: provider.clientId,
+                required: true,
+                class: 'ltr',
+                suggestEnvVars: true,
+                errors: provider.getErrors('clientId')
+            }) }}
+
+            {{ forms.autosuggestField({
+                label: "Client Secret"|t('enupal-socializer'),
+                id: 'clientSecret',
+                name: 'clientSecret',
+                value: provider.clientSecret,
+                required: true,
+                class: 'ltr',
+                suggestEnvVars: true,
+                errors: provider.getErrors('clientSecret')
+            }) }}
+
+        </div>
+        <div id="tab2" class="hidden">
+            {{ forms.editableTableField({
+                label: "User Field Mapping"|t('enupal-socializer'),
+                instructions: "Populate the User model with fields values from your Provider",
+                info: "Populate values to the user model",
+                id: 'fieldMapping',
+                name: 'fieldMapping',
+                staticRows: true,
+                minRows: fieldMapping|length,
+                maxRows: fieldMapping|length,
+                cols: {
+                    sourceFormField: {
+                        type: 'select',
+                        class: 'sourceField',
+                        options: userProfileFields,
+                        heading: "Provider Field"|t('enupal-socializer')
+                    },
+                    targetUserField: {
+                        type: 'select',
+                        options: supportedUserFields,
+                        heading: "User Field"|t('enupal-socializer')
+                    }
+                },
+                rows: fieldMapping,
+                errors: []|unique
+            }) }}
+        </div>
+
+    {% endnamespace %}
+{% endblock %}
+
+{% do view.registerAssetBundle("enupal\\socializer\\web\\assets\\fieldmapping\\FieldMappingAsset") %}
+
+{% js %}
+    $(document).ready(function() {
+    var userProfileFields = {{ userProfileFields|json_encode()|raw }};
+    new SocializerFieldMapping(userProfileFields);
+    });
+{% endjs %}
+
+{% block details %}
+    {% namespace 'fields' %}
+        {% include "enupal-socializer/providers/_sidebar/settings" %}
+        <hr>
+    {% endnamespace %}
+    <div class="meta read-only">
+        <div class="data">
+            <h5 class="heading">{{ "Date Created"|t('commerce') }}</h5>
+            <div class="value">{{ provider.dateCreated|date('short') }} {{ provider.dateCreated|time('short') }}</div>
+        </div>
+        <div class="data">
+            <h5 class="heading">{{ "Date Updated"|t('commerce') }}</h5>
+            <div class="value">{{ provider.dateUpdated|date('short') }} {{ provider.dateUpdated|time('short') }}</div>
+        </div>
+    </div>
+{% endblock %}

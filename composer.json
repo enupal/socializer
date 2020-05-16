@@ -1,8 +1,8 @@
 {
     "name": "enupal/socializer",
-    "description": "Sign in, Register and share",
+    "description": "Login in, Register and share",
     "type": "craft-plugin",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "keywords": [
         "craft",
         "cms",
@@ -14,7 +14,6 @@
         "docs": "https://github.com/enupal/socializer/blob/master/README.md",
         "issues": "https://github.com/enupal/socializer/issues"
     },
-    "license": "MIT",
     "authors": [
         {
             "name": "Enupal",
@@ -22,7 +21,8 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.2.0"
+        "craftcms/cms": "^3.2.0",
+        "hybridauth/hybridauth": "^3.2.0"
     },
     "autoload": {
         "psr-4": {
@@ -31,10 +31,12 @@
     },
     "extra": {
         "name": "Socializer",
-        "handle": "socializer",
-        "hasCpSettings": false,
-        "hasCpSection": false,
+        "handle": "enupal-socializer",
+        "hasSettings": true,
         "changelogUrl": "https://raw.githubusercontent.com/enupal/socializer/master/CHANGELOG.md",
-        "class": "enupal\\socializer\\Socializer"
+        "class": "enupal\\socializer\\Socializer",
+        "components": {
+            "app": "enupal\\socializer\\services\\App"
+        }
     }
 }

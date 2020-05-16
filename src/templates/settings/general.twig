@@ -1,0 +1,52 @@
+{% extends "enupal-socializer/_layouts/settings" %}
+{% import "_includes/forms" as forms %}
+
+{% set settings = settings is defined ? settings : craft.socializer.getSettings() %}
+{% set fullPageForm = true %}
+{% set saveShortcutRedirect = 'enupal-socializer/settings/general' %}
+
+{% set savePaymentForm %}
+    <div class="buttons">
+        <input class="btn submit" type="submit" value="{{ 'Save'|t }}">
+    </div>
+{% endset %}
+
+{% set content %}
+    <input type="hidden" name="action"
+           value="enupal-socializer/settings/save-settings">
+
+    <div id="settings-cp">
+
+        {% namespace 'settings' %}
+            {{ forms.field({
+                label: "General settings"|t('enupal-socializer')|upper
+            }, null) }}
+            <hr>
+
+            {{ forms.lightswitchField({
+                label: 'Enable User Sign Up'|t('enupal-socializer'),
+                instructions: 'Allows user register if the email does not exist on Craft CMS',
+                id: 'enableUserSignUp',
+                name: 'enableUserSignUp',
+                on: settings.enableUserSignUp,
+                onLabel: "On"|t('enupal-socializer'),
+                offLabel: "Off"|t('enupal-socializer'),
+                errors: settings.getErrors('enableUserSignUp'),
+                toggle: "user-group"
+            }) }}
+            <div id="user-group" class="{% if not settings.enableUserSignUp %} hidden {% endif %}">
+                {{ forms.selectField({
+                    label: "Default User Group"|t('enupal-stripe'),
+                    id: 'userGroupId',
+                    instructions: 'Default user group that will be granted to the user when sign up',
+                    name: 'userGroupId',
+                    options: craft.socializer.app.settings.getUserGroups() | map((ug) => { value: ug.id, label: ug.name }),
+                value: settings.userGroupId
+                }) }}
+            </div>
+        {% endnamespace %}
+
+    </div>
+
+{% endset %}
+

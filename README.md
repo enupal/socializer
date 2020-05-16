@@ -1,43 +1,35 @@
-# Socializer plugin for Craft CMS 3.x
+<p align="center">
+	<a href="https://docs.enupal.com/socializer" target="_blank">
+	<img width="212" height="212" src="https://enupal.com/assets/docs/socializer-icon.svg" alt="Socializer"></a>
+</p>
 
-Sign in, Register and share
+# Socializer Plugin for Craft CMS
 
-![Screenshot](resources/img/plugin-logo.png)
+Enables users to login to your website through more than 35 social networks.
 
-## Requirements
+## Features
 
-This plugin requires Craft CMS 3.0.0-beta.23 or later.
+ * More than 35 social networks available: Facebook, Twitter, Slack, Instagram, Google, Github, LinkedIn, Amazon, Discord, Spotify, TwitchTV and much more!
+ * User Field Mapping, allow setup your field mapping for when a user is registered, social data can be stored as JSON
+ * CP login
+ * Retrieve access tokens easily for business logic.
+ * Events for developers
 
-## Installation
+## Documentation
 
-To install the plugin, follow these instructions.
+https://docs.enupal.com/socializer
 
-1. Open your terminal and go to your Craft project:
+## Socializer Support
 
-        cd /path/to/project
+* Send us a note at: support@enupal.com
 
-2. Then tell Composer to load the plugin:
+* Create an [issue](https://github.com/enupal/socializer/issues) on Github
 
-        composer require enupal/socializer
+------------------------------------------------------------
 
-3. In the Control Panel, go to Settings → Plugins and click the “Install” button for Socializer.
+Brought to you by [enupal](https://enupal.com)
 
-## Socializer Overview
-
--Insert text here-
-
-## Configuring Socializer
-
--Insert text here-
-
-## Using Socializer
-
--Insert text here-
-
-## Socializer Roadmap
-
-Some things to do, and ideas for potential features:
-
-* Release it
-
-Brought to you by [Enupal](https://enupal.com/)
+<p align="center">
+  <a href="https://enupal.com" target="_blank">
+  <img width="169" height="35" src="https://enupal.com/assets/docs/enupal-logo.png" alt="Enupal"></a>
+</p>
