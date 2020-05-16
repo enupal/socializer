@@ -36,7 +36,11 @@ class Socializer extends Plugin
     public $schemaVersion = '1.0.0';
 
     public $hasCpSection = true;
-    public $hasCpSettings = false;
+
+    /**
+     * @inheritdoc
+     */
+    public $hasCpSettings = true;
 
     /**
      * @inheritdoc
