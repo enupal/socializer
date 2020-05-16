@@ -11,7 +11,6 @@ namespace enupal\socializer\variables;
 use enupal\socializer\elements\db\ProvidersQuery;
 use enupal\socializer\elements\Provider;
 use Craft;
-use enupal\socializer\services\Providers;
 use enupal\socializer\Socializer;
 use yii\base\Behavior;
 
