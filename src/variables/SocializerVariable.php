@@ -15,7 +15,7 @@ use enupal\socializer\Socializer;
 use yii\base\Behavior;
 
 /**
- * Socializer provides an API for accessing information about stripe buttons. It is accessible from templates via `craft.socializer`.
+ * Socializer provides an API for accessing information about providers. It is accessible from templates via `craft.socializer`.
  *
  */
 class SocializerVariable extends Behavior

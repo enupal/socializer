@@ -36,7 +36,7 @@
             }) }}
             <div id="user-group" class="{% if not settings.enableUserSignUp %} hidden {% endif %}">
                 {{ forms.selectField({
-                    label: "Default User Group"|t('enupal-stripe'),
+                    label: "Default User Group"|t('enupal-socializer'),
                     id: 'userGroupId',
                     instructions: 'Default user group that will be granted to the user when sign up',
                     name: 'userGroupId',
