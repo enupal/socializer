@@ -1,5 +1,9 @@
 # Socializer Changelog
 
+## 1.0.4 - 2020.05.19
+### Fixed
+- Fixed issue on Provider validator
+
 ## 1.0.3 - 2020.05.19
 ### Fixed
 - Fixed issue on callback URL
