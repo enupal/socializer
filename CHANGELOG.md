@@ -1,5 +1,10 @@
 # Socializer Changelog
 
+## 1.0.5 - 2020.05.19
+### Fixed
+- Fixed issue when assigning user groups
+- Fixed issue when user cancel login on provider
+
 ## 1.0.4 - 2020.05.19
 ### Fixed
 - Fixed issue on Provider validator
