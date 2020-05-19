@@ -12,7 +12,7 @@ namespace enupal\socializer\controllers;
 use Craft;
 use craft\helpers\UrlHelper;
 use enupal\socializer\Socializer;
-use enupal\stripe\controllers\FrontEndController;
+use enupal\socializer\controllers\FrontEndController;
 
 class LoginController extends FrontEndController
 {

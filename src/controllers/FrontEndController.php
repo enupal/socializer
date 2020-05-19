@@ -1,16 +1,14 @@
 <?php
 /**
- * Stripe Payments plugin for Craft CMS 3.x
+ * Socializer plugin for Craft CMS 3.x
  *
  * @link      https://enupal.com/
  * @copyright Copyright (c) 2018 Enupal LLC
  */
 
-namespace enupal\stripe\controllers;
+namespace enupal\socializer\controllers;
 
 use craft\web\Controller as BaseController;
-use Craft;
-use enupal\stripe\Stripe;
 
 class FrontEndController extends BaseController
 {
