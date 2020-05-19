@@ -571,7 +571,12 @@ class Providers extends Component
     public function loginOrRegisterUser(Provider $provider)
     {
         $adapter = $provider->getAdapter();
-        $adapter->authenticate();
+        try {
+            $adapter->authenticate();
+        } catch (\Exception $e){
+            Craft::error("Unable to Authorize user", __METHOD__);
+            return false;
+        }
 
         $userProfile = $adapter->getUserProfile();
         $user = Craft::$app->getUser()->getIdentity();

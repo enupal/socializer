@@ -48,7 +48,6 @@ class LoginController extends FrontEndController
         }
         catch (\Exception $e) {
             Craft::error($e->getMessage(), __METHOD__);
-            throw new \Exception($e->getMessage());
         }
 
         return $this->handleRedirect();
