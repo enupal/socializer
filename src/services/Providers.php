@@ -637,6 +637,13 @@ class Providers extends Component
             throw new \Exception("Something went wrong while creating the user");
         }
 
+        if ($settings->userGroupId){
+            $userGroup = Craft::$app->getUserGroups()->getGroupById($settings->userGroupId);
+            if ($userGroup){
+                Craft::$app->getUsers()->assignUserToGroups($user->id, [$userGroup->id]);
+            }
+        }
+
         return $user;
     }
 
@@ -667,13 +674,6 @@ class Providers extends Component
                 if ($field){
                     $user->setFieldValue($item['targetUserField'], $profileValue);
                 }
-            }
-        }
-
-        if ($settings->userGroupId){
-            $userGroup = Craft::$app->getUserGroups()->getGroupById($settings->userGroupId);
-            if ($userGroup){
-                Craft::$app->getUsers()->assignUserToGroups($user->id, [$userGroup->id]);
             }
         }
 
