@@ -571,7 +571,12 @@ class Providers extends Component
     public function loginOrRegisterUser(Provider $provider)
     {
         $adapter = $provider->getAdapter();
-        $adapter->authenticate();
+        try {
+            $adapter->authenticate();
+        } catch (\Exception $e){
+            Craft::error("Unable to Authorize user", __METHOD__);
+            return false;
+        }
 
         $userProfile = $adapter->getUserProfile();
         $user = Craft::$app->getUser()->getIdentity();
@@ -637,6 +642,13 @@ class Providers extends Component
             throw new \Exception("Something went wrong while creating the user");
         }
 
+        if ($settings->userGroupId){
+            $userGroup = Craft::$app->getUserGroups()->getGroupById($settings->userGroupId);
+            if ($userGroup){
+                Craft::$app->getUsers()->assignUserToGroups($user->id, [$userGroup->id]);
+            }
+        }
+
         return $user;
     }
 
@@ -667,13 +679,6 @@ class Providers extends Component
                 if ($field){
                     $user->setFieldValue($item['targetUserField'], $profileValue);
                 }
-            }
-        }
-
-        if ($settings->userGroupId){
-            $userGroup = Craft::$app->getUserGroups()->getGroupById($settings->userGroupId);
-            if ($userGroup){
-                Craft::$app->getUsers()->assignUserToGroups($user->id, [$userGroup->id]);
             }
         }
 
