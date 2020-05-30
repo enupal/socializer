@@ -123,6 +123,11 @@ class Socializer extends Plugin
         ];
     }
 
+    protected function settingsHtml()
+    {
+        return Craft::$app->getView()->renderTemplate('enupal-socializer/settings/index');
+    }
+
     /**
      * @inheritdoc
      */

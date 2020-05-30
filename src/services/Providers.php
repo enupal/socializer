@@ -17,6 +17,10 @@ use craft\fields\Number;
 use craft\fields\PlainText;
 use craft\helpers\UrlHelper;
 use enupal\socializer\elements\Provider;
+use enupal\socializer\events\AfterLoginEvent;
+use enupal\socializer\events\AfterRegisterUserEvent;
+use enupal\socializer\events\BeforeLoginEvent;
+use enupal\socializer\events\BeforeRegisterUserEvent;
 use enupal\socializer\records\Provider as ProviderRecord;
 use Hybridauth\Provider\Amazon;
 use Hybridauth\Provider\Authentiq;
@@ -62,6 +66,82 @@ use yii\db\Exception;
 
 class Providers extends Component
 {
+    /**
+     * @event BeforeLogin The event that is triggered before a user is logged in
+     *
+     * ```php
+     * use enupal\socializer\events\BeforeLoginEvent;
+     * use enupal\socializer\services\Providers;
+     * use yii\base\Event;
+     *
+     * Event::on(Providers::class, Providers::EVENT_BEFORE_LOGIN, function(BeforeLoginEvent $e) {
+     *      $user = $e->user;
+     *      $userProfile = $e->userProfile;
+     *      $provider = $e->provider;
+     *      // set to false to cancel this action
+     *      $e->isValid = true;
+     *     // Do something
+     * });
+     * ```
+     */
+    const EVENT_BEFORE_LOGIN = 'beforeLoginUser';
+
+    /**
+     * @event AfterLogin The event that is triggered after a user is logged in
+     *
+     * ```php
+     * use enupal\socializer\events\AfterLoginEvent;
+     * use enupal\socializer\services\Providers;
+     * use yii\base\Event;
+     *
+     * Event::on(Providers::class, Providers::EVENT_AFTER_LOGIN, function(AfterLoginEvent $e) {
+     *      $user = $e->user;
+     *      $userProfile = $e->userProfile;
+     *      $provider = $e->provider;
+     *     // Do something
+     * });
+     * ```
+     */
+    const EVENT_AFTER_LOGIN = 'afterLoginUser';
+
+    /**
+     * @event BeforeRegister The event that is triggered before a user is registered
+     *
+     * ```php
+     * use enupal\socializer\events\BeforeRegisterUserEvent;
+     * use enupal\socializer\services\Providers;
+     * use yii\base\Event;
+     *
+     * Event::on(Providers::class, Providers::EVENT_BEFORE_REGISTER, function(BeforeRegisterUserEvent $e) {
+     *      $user = $e->user;
+     *      $userProfile = $e->userProfile;
+     *      $provider = $e->provider;
+     *      // set to false to cancel this action
+     *      $e->isValid = true;
+     *     // Do something
+     * });
+     * ```
+     */
+    const EVENT_BEFORE_REGISTER = 'beforeRegisterUser';
+
+    /**
+     * @event AfterLogin The event that is triggered after a user is registered
+     *
+     * ```php
+     * use enupal\socializer\events\AfterRegisterUserEvent;
+     * use enupal\socializer\services\Providers;
+     * use yii\base\Event;
+     *
+     * Event::on(Providers::class, Providers::EVENT_AFTER_ORDER_COMPLETE, function(AfterRegisterUserEvent $e) {
+     *      $user = $e->user;
+     *      $user = $e->userProfile;
+     *      $user = $e->provider;
+     *     // Do something
+     * });
+     * ```
+     */
+    const EVENT_AFTER_REGISTER = 'afterRegisterUser';
+
     /**
      * @param $handle
      * @param $options
@@ -592,12 +672,50 @@ class Providers extends Component
 
         Socializer::$app->tokens->registerToken($user, $provider);
 
+        $user = $this->triggerBeforeLoginUser($user, $provider, $userProfile);
+
+        if (is_null($user)){
+            Craft::error("User not valid to login on BeforeLoginEvent", __METHOD__);
+            return false;
+        }
+
         if (!Craft::$app->getUser()->login($user)) {
             Craft::error("Something went wrong while login craft user", __METHOD__);
             return false;
         }
 
+        $this->triggerAfterLoginEvent($user, $provider, $userProfile);
+
         return true;
+    }
+
+    public function triggerBeforeLoginUser($user, $provider, $userProfile)
+    {
+        $event = new BeforeLoginEvent([
+            'user' => $user,
+            'provider' => $provider,
+            'userProfile' => $userProfile,
+        ]);
+
+        $this->trigger(self::EVENT_BEFORE_LOGIN, $event);
+        $user = $event->user;
+
+        if (!$event->isValid) {
+            return null;
+        }
+
+        return $user;
+    }
+
+    private function triggerAfterLoginEvent($user, $provider, $userProfile)
+    {
+        $event = new AfterLoginEvent([
+            'user' => $user,
+            'provider' => $provider,
+            'userProfile' => $userProfile,
+        ]);
+
+        $this->trigger(self::EVENT_AFTER_LOGIN, $event);
     }
 
     /**
@@ -628,6 +746,7 @@ class Providers extends Component
         }
 
         Craft::$app->requireEdition(Craft::Pro);
+
         $user = new User();
         $user->email = $userProfile->email;
         $user->username = $userProfile->email;
@@ -636,6 +755,19 @@ class Providers extends Component
 
         // validate populate
         $user = $this->populateUserModel($user, $provider, $userProfile);
+
+        $event = new BeforeRegisterUserEvent([
+            'user' => $user,
+            'provider' => $provider,
+            'userProfile' => $userProfile,
+        ]);
+
+        $this->trigger(self::EVENT_BEFORE_REGISTER, $event);
+        $user = $event->user;
+
+        if (!$event->isValid) {
+            return null;
+        }
 
         if (!Craft::$app->elements->saveElement($user)){
             Craft::error("Unable to create user: ".json_encode($user->getErrors()));
@@ -649,7 +781,20 @@ class Providers extends Component
             }
         }
 
+        $this->triggerAfterRegisterEvent($user, $provider, $userProfile);
+
         return $user;
+    }
+
+    private function triggerAfterRegisterEvent($user, $provider, $userProfile)
+    {
+        $event = new AfterRegisterUserEvent([
+            'user' => $user,
+            'provider' => $provider,
+            'userProfile' => $userProfile,
+        ]);
+
+        $this->trigger(self::EVENT_AFTER_REGISTER, $event);
     }
 
     /**
