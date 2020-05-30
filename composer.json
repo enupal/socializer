@@ -2,7 +2,7 @@
     "name": "enupal/socializer",
     "description": "Login in, Register and share",
     "type": "craft-plugin",
-    "version": "1.0.5",
+    "version": "1.1.0",
     "keywords": [
         "craft",
         "cms",

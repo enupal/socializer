@@ -1,5 +1,12 @@
 # Socializer Changelog
 
+## 1.1.0 - 2020.05.30
+### Added
+- Added `EVENT_BEFORE_LOGIN` [event](https://docs.enupal.com/socializer/development/events.html#event-before-login)
+- Added `EVENT_AFTER_LOGIN` [event](https://docs.enupal.com/socializer/development/events.html#event-after-login)
+- Added `EVENT_BEFORE_REGISTER` [event](https://docs.enupal.com/socializer/development/events.html#event-before-register)
+- Added `EVENT_AFTER_REGISTER` [event](https://docs.enupal.com/socializer/development/events.html#event-after-register)
+
 ## 1.0.5 - 2020.05.19
 ### Fixed
 - Fixed issue when assigning user groups
