@@ -15,6 +15,7 @@ use craft\helpers\UrlHelper;
 use craft\web\Controller as BaseController;
 use enupal\socializer\elements\Provider as ProviderElement;
 use enupal\socializer\Socializer;
+use Hybridauth\Provider\Apple;
 use yii\web\NotFoundHttpException;
 
 class ProvidersController extends BaseController
@@ -158,6 +159,10 @@ class ProvidersController extends BaseController
      */
     private function getApiDocumentation($providerType)
     {
+        if ($providerType === Apple::class) {
+            return 'https://developer.apple.com/documentation/sign_in_with_apple';
+        }
+
         $reflection = new \ReflectionClass($providerType);
         $property = $reflection->getProperty('apiDocumentation');
         $property->setAccessible(true);

@@ -65,39 +65,59 @@
 
     {% namespace 'fields' %}
         <div id="tab1">
-            {{ forms.field({
-                label: "Create a new application"|t('enupal-socializer'),
-                instructions: "Follow the next <a target='_blank' href='"~ apiDocumentation ~"'>instructions</a>, and add the following redirect URI to your APP:"|t('enupal-socializer')
-            }, null) }}
-            <input type="text" class="text ltr fullwidth" readonly value="{{ callbackUrl }}">
-            <hr>
 
-            {{ forms.field({
-                label: "OAuth credentials"|t('enupal-socializer'),
-                instructions: "Copy your Client ID and Client Secret from your App, <b>enable</b> this provider and finally click on Save"|t('enupal-socializer')
-            }, null) }}
+            {% if not provider.isAppleProvider() %}
 
-            {{ forms.autosuggestField({
-                label: "Client ID"|t('enupal-socializer'),
-                id: 'clientId',
-                name: 'clientId',
-                value: provider.clientId,
-                required: true,
-                class: 'ltr',
-                suggestEnvVars: true,
-                errors: provider.getErrors('clientId')
-            }) }}
+                {{ forms.field({
+                    label: "Create a new application"|t('enupal-socializer'),
+                    instructions: "Follow the next <a target='_blank' href='"~ apiDocumentation ~"'>instructions</a>, and add the following redirect URI to your APP:"|t('enupal-socializer')
+                }, null) }}
+                <input type="text" class="text ltr fullwidth" readonly value="{{ callbackUrl }}">
+                <hr>
 
-            {{ forms.autosuggestField({
-                label: "Client Secret"|t('enupal-socializer'),
-                id: 'clientSecret',
-                name: 'clientSecret',
-                value: provider.clientSecret,
-                required: true,
-                class: 'ltr',
-                suggestEnvVars: true,
-                errors: provider.getErrors('clientSecret')
-            }) }}
+                {{ forms.field({
+                    label: "OAuth credentials"|t('enupal-socializer'),
+                    instructions: "Copy your Client ID and Client Secret from your App, <b>enable</b> this provider and finally click on Save"|t('enupal-socializer')
+                }, null) }}
+                
+                {{ forms.autosuggestField({
+                    label: "Client ID"|t('enupal-socializer'),
+                    id: 'clientId',
+                    name: 'clientId',
+                    value: provider.clientId,
+                    required: true,
+                    class: 'ltr',
+                    suggestEnvVars: true,
+                    errors: provider.getErrors('clientId')
+                }) }}
+
+                {{ forms.autosuggestField({
+                    label: "Client Secret"|t('enupal-socializer'),
+                    id: 'clientSecret',
+                    name: 'clientSecret',
+                    value: provider.clientSecret,
+                    required: true,
+                    class: 'ltr',
+                    suggestEnvVars: true,
+                    errors: provider.getErrors('clientSecret')
+                }) }}
+            {% else %}
+                {% if craft.socializer.validateAppleSettings()  %}
+                    <div class="pane">
+                        <p>
+                            <span class="checkmark-icon"></span>
+                            {{ 'The Apple settings was succesfully loaded from config file'|t('app') }}
+                        </p>
+                    </div>
+                {% else %}
+                    <div class="pane">
+                        <p>
+                            <span class="alert-icon"></span>
+                            {{ 'Unable to load the Apple settings from config file, please check your logs'|t('app') }}
+                        </p>
+                    </div>
+                {% endif %}
+            {% endif %}
 
         </div>
         <div id="tab2" class="hidden">
