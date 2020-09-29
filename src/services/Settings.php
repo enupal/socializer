@@ -136,12 +136,12 @@ class Settings extends Component
     {
         $config = $this->getConfigSettings();
 
-        if (!isset($config['socializer']['apple'])) {
+        if (!isset($config['apple'])) {
             Craft::error('Apple config is not set', __METHOD__);
             return false;
         }
 
-        $apple = $config['socializer']['apple'];
+        $apple = $config['apple'];
 
         if (!isset($apple['keys']['id']) || !isset($apple['keys']['team_id']) ||
             !isset($apple['keys']['key_id']) ||
@@ -153,6 +153,7 @@ class Settings extends Component
 
         if (!file_exists($apple['keys']['key_file'])) {
             Craft::error('Unable to find Apple key file: '.$apple['keys']['key_file'], __METHOD__);
+            return false;
         }
 
         return true;
