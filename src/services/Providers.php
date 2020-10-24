@@ -37,6 +37,7 @@ use Hybridauth\Provider\GitLab;
 use Hybridauth\Provider\Instagram;
 use Hybridauth\Provider\LinkedIn;
 use Hybridauth\Provider\Mailru;
+use Hybridauth\Provider\Medium;
 use Hybridauth\Provider\MicrosoftGraph;
 use Hybridauth\Provider\Odnoklassniki;
 use Hybridauth\Provider\ORCID;
@@ -184,6 +185,7 @@ class Providers extends Component
             Instagram::class,
             LinkedIn::class,
             Mailru::class,
+            Medium::class,
             MicrosoftGraph::class,
             Odnoklassniki::class,
             ORCID::class,

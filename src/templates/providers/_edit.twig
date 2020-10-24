@@ -64,16 +64,16 @@
     <input type="hidden" name="providerId" value="{{ providerId }}">
 
     {% namespace 'fields' %}
+        {% set apiDocumentation = provider.isAppleProvider() ? "https://docs.enupal.com/socializer/providers/apple.html" : apiDocumentation %}
         <div id="tab1">
+            {{ forms.field({
+                label: "Create a new application"|t('enupal-socializer'),
+                instructions: "Follow the next <a target='_blank' href='"~ apiDocumentation ~"'>instructions</a>, and add the following redirect URI to your APP:"|t('enupal-socializer')
+            }, null) }}
+            <input type="text" class="text ltr fullwidth" readonly value="{{ callbackUrl }}">
+            <hr>
 
             {% if not provider.isAppleProvider() %}
-
-                {{ forms.field({
-                    label: "Create a new application"|t('enupal-socializer'),
-                    instructions: "Follow the next <a target='_blank' href='"~ apiDocumentation ~"'>instructions</a>, and add the following redirect URI to your APP:"|t('enupal-socializer')
-                }, null) }}
-                <input type="text" class="text ltr fullwidth" readonly value="{{ callbackUrl }}">
-                <hr>
 
                 {{ forms.field({
                     label: "OAuth credentials"|t('enupal-socializer'),

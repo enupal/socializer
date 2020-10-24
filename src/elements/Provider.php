@@ -363,7 +363,8 @@ class Provider extends Element
             $configSettings = Socializer::$app->settings->getConfigSettings();
 
             if (isset($configSettings['apple'])) {
-                $configSettings['callback'] = Socializer::$app->settings->getCallbackUrl();
+                $config = $configSettings['apple'];
+                $config['callback'] = Socializer::$app->settings->getCallbackUrl();
             }
         }
 
