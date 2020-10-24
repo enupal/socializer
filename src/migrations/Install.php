@@ -32,8 +32,8 @@ class Install extends Migration
      */
     public function safeDown()
     {
-        $this->dropTableIfExists('{{%enupalsocializer_providers}}');
         $this->dropTableIfExists('{{%enupalsocializer_tokens}}');
+        $this->dropTableIfExists('{{%enupalsocializer_providers}}');
 
         return true;
     }

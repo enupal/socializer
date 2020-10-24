@@ -13,7 +13,6 @@ use craft\db\Query;
 use yii\base\Component;
 use enupal\socializer\models\Settings as SettingsModel;
 use enupal\socializer\Socializer;
-use yii\db\Exception;
 
 class Settings extends Component
 {
@@ -123,5 +122,40 @@ class Settings extends Component
         $userGroups = array_merge($userGroups, $craftUserGroups);
 
         return $userGroups;
+    }
+
+    /**
+     * @return array|null
+     */
+    public function getConfigSettings()
+    {
+        return Craft::$app->config->getGeneral()->socializer ?? null;
+    }
+
+    public function validateAppleSettings()
+    {
+        $config = $this->getConfigSettings();
+
+        if (!isset($config['apple'])) {
+            Craft::error('Apple config is not set', __METHOD__);
+            return false;
+        }
+
+        $apple = $config['apple'];
+
+        if (!isset($apple['keys']['id']) || !isset($apple['keys']['team_id']) ||
+            !isset($apple['keys']['key_id']) ||
+            !isset($apple['keys']['key_file']) || !isset($apple['scope']) ||
+            !isset($apple['verifyTokenSignature'])) {
+            Craft::error('Missing a required Apple config, please check our docs.', __METHOD__);
+            return false;
+        }
+
+        if (!file_exists($apple['keys']['key_file'])) {
+            Craft::error('Unable to find Apple key file: '.$apple['keys']['key_file'], __METHOD__);
+            return false;
+        }
+
+        return true;
     }
 }

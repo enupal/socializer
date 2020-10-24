@@ -23,6 +23,7 @@ use enupal\socializer\events\BeforeLoginEvent;
 use enupal\socializer\events\BeforeRegisterUserEvent;
 use enupal\socializer\records\Provider as ProviderRecord;
 use Hybridauth\Provider\Amazon;
+use Hybridauth\Provider\Apple;
 use Hybridauth\Provider\Authentiq;
 use Hybridauth\Provider\BitBucket;
 use Hybridauth\Provider\Blizzard;
@@ -36,6 +37,7 @@ use Hybridauth\Provider\GitLab;
 use Hybridauth\Provider\Instagram;
 use Hybridauth\Provider\LinkedIn;
 use Hybridauth\Provider\Mailru;
+use Hybridauth\Provider\Medium;
 use Hybridauth\Provider\MicrosoftGraph;
 use Hybridauth\Provider\Odnoklassniki;
 use Hybridauth\Provider\ORCID;
@@ -167,6 +169,7 @@ class Providers extends Component
     public function getAllProviderTypes()
     {
         return [
+            Apple::class,
             Amazon::class,
             Authentiq::class,
             BitBucket::class,
@@ -182,6 +185,7 @@ class Providers extends Component
             Instagram::class,
             LinkedIn::class,
             Mailru::class,
+            Medium::class,
             MicrosoftGraph::class,
             Odnoklassniki::class,
             ORCID::class,

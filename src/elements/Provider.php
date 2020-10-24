@@ -22,6 +22,7 @@ use enupal\socializer\elements\db\ProvidersQuery;
 use enupal\socializer\Socializer;
 use enupal\socializer\validators\EnabledValidator;
 use Hybridauth\Adapter\AdapterInterface;
+use Hybridauth\Provider\Apple;
 use yii\base\Model;
 
 /**
@@ -349,7 +350,7 @@ class Provider extends Element
     private function getProviderConfig()
     {
         // @todo add event to give a chance to update default config
-        return [
+        $config = [
             'callback' => Socializer::$app->settings->getCallbackUrl(),
             'keys' => [
                 'id' => $this->getClientId(),
@@ -357,6 +358,17 @@ class Provider extends Element
             ],
             'includeEmail' => true
         ];
+
+        if ($this->type === Apple::class && Socializer::$app->settings->validateAppleSettings()) {
+            $configSettings = Socializer::$app->settings->getConfigSettings();
+
+            if (isset($configSettings['apple'])) {
+                $config = $configSettings['apple'];
+                $config['callback'] = Socializer::$app->settings->getCallbackUrl();
+            }
+        }
+
+        return $config;
     }
 
     /**
@@ -396,5 +408,10 @@ class Provider extends Element
         $rules[] = [['clientId'], EnabledValidator::class];
 
         return $rules;
+    }
+
+    public function isAppleProvider()
+    {
+        return $this->type === Apple::class;
     }
 }
