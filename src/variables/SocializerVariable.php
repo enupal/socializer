@@ -85,4 +85,9 @@ class SocializerVariable extends Behavior
     {
         return Socializer::$app->providers->loginUrl($handle, $options);
     }
+
+    public function validateAppleSettings()
+    {
+        return Socializer::$app->settings->validateAppleSettings();
+    }
 }
