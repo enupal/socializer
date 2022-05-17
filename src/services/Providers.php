@@ -216,7 +216,7 @@ class Providers extends Component
     public function getUserFieldsAsOptions()
     {
         $user = new User();
-        $fields = $user->getFieldLayout()->getFields();
+        $fields = $user->getFieldLayout()->getCustomFields();
         $options = [[
             'label' => 'None',
             'value' => ''

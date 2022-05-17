@@ -34,7 +34,7 @@ class Provider extends Element
     /**
      * @inheritdoc
      */
-    public $id;
+    public ?int $id;
 
     /**
      * @var string Name.
@@ -69,7 +69,7 @@ class Provider extends Element
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return array_merge(parent::behaviors(), [
             'fieldLayout' => [
@@ -79,7 +79,7 @@ class Provider extends Element
         ]);
     }
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -114,7 +114,7 @@ class Provider extends Element
     /**
      * @inheritdoc
      */
-    public static function refHandle()
+    public static function refHandle(): ?string
     {
         return 'socializer-providers';
     }
@@ -154,7 +154,7 @@ class Provider extends Element
     /**
      * @inheritdoc
      */
-    public function getFieldLayout()
+    public function getFieldLayout(): ?\craft\models\FieldLayout
     {
         $behaviors = $this->getBehaviors();
         $fieldLayout = $behaviors['fieldLayout'];
@@ -165,7 +165,7 @@ class Provider extends Element
     /**
      * @inheritdoc
      */
-    public function getCpEditUrl()
+    public function getCpEditUrl(): ?string
     {
         return UrlHelper::cpUrl(
             'enupal-socializer/providers/edit/' . $this->id
@@ -177,7 +177,7 @@ class Provider extends Element
      *
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         return $this->name;
     }
@@ -305,7 +305,7 @@ class Provider extends Element
      * @param bool $isNew
      * @throws \Exception
      */
-    public function afterSave(bool $isNew)
+    public function afterSave(bool $isNew): void
     {
         $record = new ProviderRecord();
 
@@ -398,7 +398,7 @@ class Provider extends Element
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = parent::rules();
         $rules[] = [['name', 'type'], 'required'];
