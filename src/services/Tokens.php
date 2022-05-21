@@ -66,7 +66,7 @@ class Tokens extends Component
      */
     public function getCurrentUserToken(int $providerId)
     {
-        $user = $user = Craft::$app->getUser()->getIdentity();
+        $user = Craft::$app->getUser()->getIdentity();
 
         if ($user){
             /** @var Token $token */

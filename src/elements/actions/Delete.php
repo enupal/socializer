@@ -53,7 +53,7 @@ class Delete extends ElementAction
     /**
      * @inheritdoc
      */
-    public function getConfirmationMessage()
+    public function getConfirmationMessage(): ?string
     {
         return Craft::t('enupal-socializer', "Are you sure you want to delete the selected providers, and all of it's tokens?");
     }

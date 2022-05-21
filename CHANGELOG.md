@@ -1,5 +1,10 @@
 # Socializer Changelog
 
+## 2.0.0 - 2022.05.21
+
+### Added
+- Added Craft CMS 4 support
+
 ## 1.2.0 - 2020.10.24
 
 > {tip} Apple Sign In for Craft CMS is here (beta)! Provide a fast, secure, and privacy-friendly way for users to set up an account and start using your apps and websites [docs](https://docs.enupal.com/socializer/providers/apple.html). Enjoy!

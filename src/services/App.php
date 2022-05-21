@@ -27,7 +27,7 @@ class App extends Component
      */
     public $tokens;
 
-    public function init()
+    public function init(): void
     {
         $this->settings = new Settings();
         $this->providers = new Providers();
