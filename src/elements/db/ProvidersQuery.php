@@ -16,8 +16,6 @@ class ProvidersQuery extends ElementQuery
 
     // General - Properties
     // =========================================================================
-    public $id;
-    public $dateCreated;
     public $name;
     public $handle;
     public $type;

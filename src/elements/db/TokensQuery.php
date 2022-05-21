@@ -16,8 +16,6 @@ class TokensQuery extends ElementQuery
 
     // General - Properties
     // =========================================================================
-    public $id;
-    public $dateCreated;
     public $userId;
     public $providerId;
     public $accessToken;

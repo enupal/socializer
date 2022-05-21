@@ -24,11 +24,6 @@ use yii\base\Model;
 class Token extends Element
 {
     /**
-     * @inheritdoc
-     */
-    public $id;
-
-    /**
      * @var int
      */
     public $userId;
@@ -46,7 +41,7 @@ class Token extends Element
     /**
      * @inheritdoc
      */
-    public function behaviors()
+    public function behaviors(): array
     {
         return array_merge(parent::behaviors(), [
             'fieldLayout' => [
@@ -56,7 +51,7 @@ class Token extends Element
         ]);
     }
 
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -80,7 +75,7 @@ class Token extends Element
     /**
      * @inheritdoc
      */
-    public static function refHandle()
+    public static function refHandle(): ?string
     {
         return 'socializer-providers';
     }
@@ -120,7 +115,7 @@ class Token extends Element
     /**
      * @inheritdoc
      */
-    public function getFieldLayout()
+    public function getFieldLayout(): ?\craft\models\FieldLayout
     {
         $behaviors = $this->getBehaviors();
         $fieldLayout = $behaviors['fieldLayout'];
@@ -161,7 +156,7 @@ class Token extends Element
      * @param bool $isNew
      * @throws \Exception
      */
-    public function afterSave(bool $isNew)
+    public function afterSave(bool $isNew): void
     {
         $record = new TokenRecord();
 
@@ -187,7 +182,7 @@ class Token extends Element
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         $rules = [];
         $rules[] = [['userId', 'providerId'], 'required'];

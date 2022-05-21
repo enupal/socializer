@@ -2,7 +2,7 @@
     "name": "enupal/socializer",
     "description": "Login in, Register and share",
     "type": "craft-plugin",
-    "version": "1.2.0",
+    "version": "2.0.0",
     "keywords": [
         "craft",
         "cms",
@@ -21,8 +21,8 @@
         }
     ],
     "require": {
-        "craftcms/cms": "^3.2.0",
-        "hybridauth/hybridauth": "3.6.0"
+        "craftcms/cms": "^4.0.0",
+        "hybridauth/hybridauth": "3.8.0"
     },
     "autoload": {
         "psr-4": {

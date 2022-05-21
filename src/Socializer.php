@@ -33,14 +33,14 @@ class Socializer extends Plugin
     /**
      * @var string
      */
-    public $schemaVersion = '1.0.0';
+    public string $schemaVersion = '1.0.0';
 
-    public $hasCpSection = true;
+    public bool $hasCpSection = true;
 
     /**
      * @inheritdoc
      */
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
     /**
      * @inheritdoc
@@ -92,7 +92,7 @@ class Socializer extends Plugin
     /**
      * @inheritdoc
      */
-    public function getCpNavItem()
+    public function getCpNavItem(): ?array
     {
         $parent = parent::getCpNavItem();
         return array_merge($parent, [
@@ -123,7 +123,7 @@ class Socializer extends Plugin
         ];
     }
 
-    protected function settingsHtml()
+    protected function settingsHtml(): ?string
     {
         return Craft::$app->getView()->renderTemplate('enupal-socializer/settings/index');
     }
@@ -131,7 +131,7 @@ class Socializer extends Plugin
     /**
      * @inheritdoc
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?\craft\base\Model
     {
         return new Settings();
     }
