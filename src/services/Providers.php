@@ -726,13 +726,13 @@ class Providers extends Component
      * Register or get existing user
      * @param Profile $userProfile
      * @param Provider $provider
-     * @return User
+     * @return ?User
      * @throws \Throwable
      * @throws \craft\errors\ElementNotFoundException
      * @throws \craft\errors\WrongEditionException
      * @throws \yii\base\Exception
      */
-    private function retrieveUser(Profile $userProfile, Provider $provider): User
+    private function retrieveUser(Profile $userProfile, Provider $provider): ?User
     {
         if (is_null($userProfile->email)){
             throw new \Exception("Email address is not provided, please check the settings of your application");

@@ -32,11 +32,6 @@ use yii\base\Model;
 class Provider extends Element
 {
     /**
-     * @inheritdoc
-     */
-    public ?int $id;
-
-    /**
      * @var string Name.
      */
     public $name;

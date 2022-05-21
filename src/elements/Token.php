@@ -24,11 +24,6 @@ use yii\base\Model;
 class Token extends Element
 {
     /**
-     * @inheritdoc
-     */
-    public ?int $id;
-
-    /**
      * @var int
      */
     public $userId;
