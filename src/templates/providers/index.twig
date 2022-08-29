@@ -26,14 +26,16 @@
                 {{ csrfInput() }}
                 <input type="hidden" name="action" value="enupal-socializer/providers/edit-provider">
             </form>
-            <a class="btn submit add icon" href="{{ url('enupal-socializer/providers/new') }}">{{ "New Provider"|t('enupal-socializer') }}</a>
+        </div>
+        <div class="flex">
+            <a id="add-new-provider" class="btn submit add icon" href="{{ url('enupal-socializer/providers/new') }}">{{ "New Provider"|t('enupal-socializer') }}</a>
         </div>
     {% endif %}
 {% endblock %}
 
 {% js %}
     $(document).ready(function() {
-        $(".buttons > .submit.add.icon").on('click', function(){
+        $("#add-new-provider").on('click', function(){
             event.preventDefault();
             $("#createProviderForm").submit();
         });
