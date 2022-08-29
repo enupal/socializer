@@ -14,7 +14,7 @@
 {% block actionButton %}
     {% set options = craft.socializer.getProvidersAsOptions() %}
     {% if options|length %}
-        <div class="buttons">
+        <div class="flex">
             <form id="createProviderForm" method="POST">
                 {{ forms.selectField({
                     id: 'providerType',
@@ -27,15 +27,15 @@
                 <input type="hidden" name="action" value="enupal-socializer/providers/edit-provider">
             </form>
         </div>
-        <div class="buttons">
-            <a class="btn submit add icon" href="{{ url('enupal-socializer/providers/new') }}">{{ "New Provider"|t('enupal-socializer') }}</a>
+        <div class="flex">
+            <a id="add-new-provider" class="btn submit add icon" href="{{ url('enupal-socializer/providers/new') }}">{{ "New Provider"|t('enupal-socializer') }}</a>
         </div>
     {% endif %}
 {% endblock %}
 
 {% js %}
     $(document).ready(function() {
-        $(".buttons > .submit.add.icon").on('click', function(){
+        $("#add-new-provider").on('click', function(){
             event.preventDefault();
             $("#createProviderForm").submit();
         });

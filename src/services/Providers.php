@@ -778,6 +778,8 @@ class Providers extends Component
             throw new \Exception("Something went wrong while creating the user");
         }
 
+        Craft::$app->users->activateUser($user);
+
         if ($settings->userGroupId){
             $userGroup = Craft::$app->getUserGroups()->getGroupById($settings->userGroupId);
             if ($userGroup){
