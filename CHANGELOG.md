@@ -1,5 +1,12 @@
 # Socializer Changelog
 
+## 2.0.1 - 2022.08.29
+
+### Fixed
+- Fixed issue where user was deactivated after sign-up ([#35])
+
+[#35]: https://github.com/enupal/stripe/issues/35
+
 ## 2.0.0 - 2022.05.21
 
 ### Added
