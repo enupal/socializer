@@ -20,4 +20,5 @@ class Settings extends Model
     public $enableFieldMappingPerProvider = 0;
     public $fieldMapping;
     public $enableCp = 1;
+    public $siteUrl = null;
 }

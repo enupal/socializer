@@ -10,9 +10,11 @@ namespace enupal\socializer\services;
 
 use Craft;
 use craft\db\Query;
+use craft\helpers\UrlHelper;
 use yii\base\Component;
 use enupal\socializer\models\Settings as SettingsModel;
 use enupal\socializer\Socializer;
+use craft\helpers\App;
 
 class Settings extends Component
 {
@@ -42,20 +44,13 @@ class Settings extends Component
         return $success;
     }
 
-    /**
-     * @return bool|string
+    /***
+     * @return string
+     * @throws \craft\errors\SiteNotFoundException
      */
     public function getPrimarySiteUrl()
     {
-        $primarySite = (new Query())
-            ->select(['baseUrl'])
-            ->from(['{{%sites}}'])
-            ->where(['primary' => 1])
-            ->one();
-
-        $primarySiteUrl = Craft::getAlias($primarySite['baseUrl']);
-
-        return Craft::parseEnv(Craft::getAlias(rtrim(trim($primarySiteUrl), "/")));
+        return UrlHelper::baseSiteUrl();
     }
 
     /**
@@ -63,7 +58,16 @@ class Settings extends Component
      */
     public function getCallbackUrl()
     {
-        return $this->getPrimarySiteUrl()."/socializer/login/callback";
+        $baseUrl = $this->getPrimarySiteUrl();
+        $settings = $this->getSettings();
+        if (!empty($settings->siteUrl)) {
+            $settingsBaseUrl = rtrim(trim(App::parseEnv($settings->siteUrl), "/"));
+            if (UrlHelper::isProtocolRelativeUrl($settingsBaseUrl)) {
+                $baseUrl = $settingsBaseUrl;
+            }
+        }
+
+        return $baseUrl."/socializer/login/callback";
     }
 
     /**
