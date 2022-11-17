@@ -44,6 +44,18 @@
                 value: settings.userGroupId
                 }) }}
             </div>
+
+            {{ forms.autosuggestField({
+                label: "Site URL"|t('enupal-socializer'),
+                id: 'siteUrl',
+                name: 'siteUrl',
+                instructions: "The Site URL to use as callback for this site, by default the primary site url from the db will be used, e.g: http://yoursite.com"|t('enupal-socializer'),
+                value: settings.siteUrl,
+                required: false,
+                class: 'ltr',
+                suggestEnvVars: true,
+                errors: settings.getErrors('siteUrl')
+            }) }}
         {% endnamespace %}
 
     </div>
