@@ -1,11 +1,21 @@
 # Socializer Changelog
 
+## 2.0.2 - 2022.11.17
+
+### Added
+- Added siteUrl to general settings ([#10])
+
+### Fixed
+- Fixed issue with siteUrl ([#10])
+
+[#10]: https://github.com/enupal/socializer/issues/10
+
 ## 2.0.1 - 2022.08.29
 
 ### Fixed
 - Fixed issue where user was deactivated after sign-up ([#35])
 
-[#35]: https://github.com/enupal/stripe/issues/35
+[#35]: https://github.com/enupal/socializer/issues/35
 
 ## 2.0.0 - 2022.05.21
 
