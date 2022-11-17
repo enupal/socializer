@@ -732,7 +732,7 @@ class Providers extends Component
      * @throws \craft\errors\WrongEditionException
      * @throws \yii\base\Exception
      */
-    private function retrieveUser(Profile $userProfile, Provider $provider): User
+    private function retrieveUser(Profile $userProfile, Provider $provider): ?User
     {
         if (is_null($userProfile->email)){
             throw new \Exception("Email address is not provided, please check the settings of your application");
