@@ -13,6 +13,7 @@ use craft\base\Element;
 use craft\behaviors\FieldLayoutBehavior;
 use craft\elements\actions\Restore;
 use craft\elements\db\ElementQueryInterface;
+use craft\elements\User;
 use craft\helpers\UrlHelper;
 
 use enupal\socializer\elements\actions\Delete;
@@ -60,6 +61,14 @@ class Provider extends Element
      * @var string Field Mapping
      */
     public $fieldMapping;
+
+    /**
+     * @inheritdoc
+     */
+    public function canView(User $user): bool
+    {
+        return true;
+    }
 
     /**
      * @inheritdoc
