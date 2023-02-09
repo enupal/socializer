@@ -1,5 +1,12 @@
 # Socializer Changelog
 
+## 2.0.3 - 2023.02.09
+
+### Fixed
+- Fixed bug where edit url was missing on providers index page ([#51])
+
+[#51]: https://github.com/enupal/socializer/issues/51
+
 ## 2.0.2 - 2022.11.17
 
 ### Added
