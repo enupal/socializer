@@ -13,6 +13,7 @@ use craft\base\Element;
 use craft\behaviors\FieldLayoutBehavior;
 use craft\elements\db\ElementQueryInterface;
 
+use craft\elements\User;
 use enupal\socializer\records\Token as TokenRecord;
 use enupal\socializer\elements\db\TokensQuery;
 use yii\base\Model;
@@ -37,6 +38,14 @@ class Token extends Element
      * @var string
      */
     public $accessToken;
+
+    /**
+     * @inheritdoc
+     */
+    public function canView(User $user): bool
+    {
+        return true;
+    }
 
     /**
      * @inheritdoc
