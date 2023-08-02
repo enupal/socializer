@@ -1,5 +1,10 @@
 # Socializer Changelog
 
+## 2.0.4 - 2023.08.02
+
+### Fixed
+- Fixed bug when trying to create a Telegram provider.
+
 ## 2.0.3 - 2023.02.09
 
 ### Fixed

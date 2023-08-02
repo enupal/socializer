@@ -16,6 +16,7 @@ use craft\web\Controller as BaseController;
 use enupal\socializer\elements\Provider as ProviderElement;
 use enupal\socializer\Socializer;
 use Hybridauth\Provider\Apple;
+use Hybridauth\Provider\Telegram;
 use yii\web\NotFoundHttpException;
 
 class ProvidersController extends BaseController
@@ -163,11 +164,21 @@ class ProvidersController extends BaseController
             return 'https://developer.apple.com/documentation/sign_in_with_apple';
         }
 
-        $reflection = new \ReflectionClass($providerType);
-        $property = $reflection->getProperty('apiDocumentation');
-        $property->setAccessible(true);
-        $obj = new $providerType(['callback' => 'https://example.com/path/to/script.php',"keys"=>["key" => "ads", "secret"=>"test"]]);
+        if ($providerType === Telegram::class) {
+            return 'https://core.telegram.org/bots';
+        }
 
-        return $property->getValue($obj);
+        try {
+            $reflection = new \ReflectionClass($providerType);
+            $property = $reflection->getProperty('apiDocumentation');
+            $property->setAccessible(true);
+            $obj = new $providerType(['callback' => 'https://example.com/path/to/script.php',"keys"=>["key" => "ads", "secret"=>"test"]]);
+
+            return $property->getValue($obj);
+        } catch (\Exception $e) {
+            Craft::error("Error trying to get api documentation: ".$e->getMessage() , __METHOD__);
+        }
+
+        return "No Docs available for {$providerType}";
     }
 }
